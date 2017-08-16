@@ -16,7 +16,7 @@ import hex.genmodel.easy.prediction.BinomialModelPrediction;
 
 public class MachineLearning_H2O_Example {
 
-	// Name of the generated H2O.ai model
+	// Name of the generated H2O model
 	private static String modelClassName = "com.github.megachucky.kafka.streams.machinelearning.models.gbm_pojo_test";
 
 	// Prediction Value
@@ -42,8 +42,8 @@ public class MachineLearning_H2O_Example {
 	
 		// Specify default (de)serializers for record keys and for record
 		// values.
-		streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-		streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+		streamsConfiguration.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+		streamsConfiguration.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 		// Records should be flushed every 10 seconds. This is less than the
 		// default
 		// in order to keep this example interactive.

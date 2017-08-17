@@ -13,10 +13,22 @@ Java 8 is required on your environment. Maven will download all required depende
 ## Use Cases and Technologies
 This project kicks off with an example of using Kafka Streams to deploy a H2O GBM model. More sophisticated use cases and other technologies will be added over time.
 
-### Example 1 - H2O GBM for Prediction of Flight Delays
-Use Case: Gradient Boosting Method (GBM) to predict flight delays:
-Technology: H2O generated Java model + Kafka Streams
+### Example 1 - Gradient Boosting with H2O.ai for Prediction of Flight Delays
+**Use Case**
 
-Code: [MachineLearning_H2O_Example.java](https://github.com/megachucky/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/MachineLearning_H2O_Example.java)
+Gradient Boosting Method (GBM) to predict flight delays.
+H2O generated GBM Java model is instantiated and used in a Kafka Streams application to do interence on new events.
 
-Unit Test: [MachineLearning_H2O_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/MachineLearning_H2O_Example_IntegrationTest.java)
+**Machine Learning Technology**
+* H2O (www.h2o.ai)
+* Check the H2O demo to understand the test and and how the model was built
+* https://github.com/h2oai/h2o-2/wiki/Hacking-Airline-DataSet-with-H2O
+* You can re-use the generated Java model attached to this project ([gbm_pojo_test.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/models/gbm_pojo_test.java)) or build your own model using R, Python, Flow UI or any other technologies supported by H2O framework. 
+
+**Source Code**
+
+[MachineLearning_H2O_Example.java](https://github.com/megachucky/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/MachineLearning_H2O_Example.java)
+
+**Unit Test**
+
+[MachineLearning_H2O_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/MachineLearning_H2O_Example_IntegrationTest.java)

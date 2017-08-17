@@ -1,4 +1,4 @@
-package com.github.megachucky.kafka.streams.machinelearning.test;
+package com.github.megachucky.kafka.streams.machinelearning.test.utils;
 
 import org.apache.curator.test.TestingServer;
 import org.slf4j.Logger;

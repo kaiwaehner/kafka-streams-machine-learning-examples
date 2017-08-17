@@ -22,6 +22,9 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import com.github.megachucky.kafka.streams.machinelearning.test.utils.EmbeddedSingleNodeKafkaCluster;
+import com.github.megachucky.kafka.streams.machinelearning.test.utils.IntegrationTestUtils;
+
 import hex.genmodel.easy.EasyPredictModelWrapper;
 import hex.genmodel.easy.RowData;
 import hex.genmodel.easy.exception.PredictException;

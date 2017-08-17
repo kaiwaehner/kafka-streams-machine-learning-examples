@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.github.megachucky.kafka.streams.machinelearning.test;
+package com.github.megachucky.kafka.streams.machinelearning.test.utils;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

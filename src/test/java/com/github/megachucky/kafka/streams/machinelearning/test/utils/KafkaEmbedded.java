@@ -1,4 +1,4 @@
-package com.github.megachucky.kafka.streams.machinelearning.test;
+package com.github.megachucky.kafka.streams.machinelearning.test.utils;
 
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;

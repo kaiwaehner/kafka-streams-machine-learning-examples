@@ -1,4 +1,4 @@
-package com.github.megachucky.kafka.streams.machinelearning.test;
+package com.github.megachucky.kafka.streams.machinelearning.test.utils;
 
 import java.io.IOException;
 import java.util.Properties;

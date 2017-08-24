@@ -34,13 +34,13 @@ import hex.genmodel.easy.prediction.BinomialModelPrediction;
  * 
  * @author Kai Waehner (www.kai-waehner.de)
  * 
- * End-to-end integration test based on {@link MachineLearning_H2O_Example}, using an
+ * End-to-end integration test based on {@link Kafka_Streams_MachineLearning_H2O_GBM_Example}, using an
  * embedded Kafka cluster and a H2O.ai GBM Model.
  *
- * See {@link MachineLearning_H2O_Example} for further documentation.
+ * See {@link Kafka_Streams_MachineLearning_H2O_GBM_Example} for further documentation.
  *
  */
-public class MachineLearning_H2O_Example_IntegrationTest {
+public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 
 	@ClassRule
 	public static final EmbeddedSingleNodeKafkaCluster CLUSTER = new EmbeddedSingleNodeKafkaCluster();

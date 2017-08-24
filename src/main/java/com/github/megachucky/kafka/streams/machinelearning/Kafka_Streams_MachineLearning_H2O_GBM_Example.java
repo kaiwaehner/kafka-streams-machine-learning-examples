@@ -44,7 +44,7 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example {
 		// Give the Streams application a unique name. The name must be unique
 		// in the Kafka cluster
 		// against which the application is run.
-		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "machine-learning-h2o-gbm-example");
+		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-h2o-gbm-example");
 		// Where to find Kafka broker(s).
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		

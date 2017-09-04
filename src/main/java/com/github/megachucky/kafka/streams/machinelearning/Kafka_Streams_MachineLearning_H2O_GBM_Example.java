@@ -53,10 +53,7 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example {
 		// values.
 		streamsConfiguration.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 		streamsConfiguration.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-		// Records should be flushed every 10 seconds. This is less than the
-		// default
-		// in order to keep this example interactive.
-		streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10 * 1000);
+
 		// For illustrative purposes we disable record caches
 		streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
 

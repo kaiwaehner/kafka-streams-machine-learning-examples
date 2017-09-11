@@ -67,9 +67,8 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 
 		// Images: 'unknown', Airliner, 'unknown', Butterfly
 		List<String> inputValues = Arrays.asList(
-				"xyz-not-existent.jpg",
 				"src/main/resources/images/trained_airplane_2.jpg",
-				"abc-not-existent.jpg",
+				"src/main/resources/images/devil.png",
 				"src/main/resources/images/trained_butterfly.jpg");
 
 		// ########################################################
@@ -181,13 +180,12 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		List<KeyValue<String, String>> response = IntegrationTestUtils
-				.waitUntilMinKeyValueRecordsReceived(consumerConfig, outputTopic, 1);
+				.waitUntilMinKeyValueRecordsReceived(consumerConfig, outputTopic, 3);
 		streams.close();
 		assertThat(response).isNotNull();
-		assertThat(response.get(0).value).isEqualTo("Image Recognition: What is content of the picture? => unknown");
-		assertThat(response.get(1).value).isEqualTo("Image Recognition: What is content of the picture? => airliner");
-		assertThat(response.get(2).value).isEqualTo("Image Recognition: What is content of the picture? => unknown");
-		assertThat(response.get(3).value).isEqualTo("Image Recognition: What is content of the picture? => cabbage butterfly");
+		assertThat(response.get(0).value).isEqualTo("Image Recognition: What is content of the picture? => airliner");
+		assertThat(response.get(1).value).isNotEqualTo("Image Recognition: What is content of the picture? => airliner");
+		assertThat(response.get(2).value).isEqualTo("Image Recognition: What is content of the picture? => cabbage butterfly");
 
 	}
 	

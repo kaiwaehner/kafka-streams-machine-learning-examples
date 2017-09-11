@@ -73,7 +73,7 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 		//
 
 		Properties streamsConfiguration = new Properties();
-		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "machine-learning-example-integration-test");
+		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-h2o-gbm-integration-test");
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
 
 		// The commit interval for flushing records to state stores and
@@ -191,7 +191,7 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		List<KeyValue<String, String>> response = IntegrationTestUtils
-				.waitUntilMinKeyValueRecordsReceived(consumerConfig, outputTopic, 1);
+				.waitUntilMinKeyValueRecordsReceived(consumerConfig, outputTopic, 2);
 		streams.close();
 		assertThat(response).isNotNull();
 		assertThat(response.get(0).value).isEqualTo("Prediction: Is Airline delayed? => YES");

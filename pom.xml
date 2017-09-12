@@ -25,6 +25,40 @@
 
 	<dependencies>
 
+		<!-- Kafka Streams API is the only dependency you need for building Streams 
+			applications. The only other thing is the specific Machine Learning dependencies 
+			for the models you want to build and / or deploy -->
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+
+		<!-- DeepLearning4J needs the following dependencies: 1) deeplearning4j-core, 
+			which contains the neural network implementations 2) nd4j-native-platform, 
+			the CPU version of the ND4J library that powers DL4J 3) datavec-api - Datavec 
+			is our library vectorizing and loading data -->
+
+		<!-- ND4J backend. You need one in every DL4J project. Normally define 
+			artifactId as either "nd4j-native-platform" or "nd4j-cuda-7.5-platform" -->
+		<!-- https://mvnrepository.com/artifact/org.nd4j/nd4j-native-platform -->
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>nd4j-native-platform</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
+		<!-- Core DL4J functionality -->
+		<!-- https://mvnrepository.com/artifact/org.deeplearning4j/deeplearning4j-core -->
+		<dependency>
+			<groupId>org.deeplearning4j</groupId>
+			<artifactId>deeplearning4j-core</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
+
+
 		<!-- https://mvnrepository.com/artifact/org.tensorflow/tensorflow -->
 		<dependency>
 			<groupId>org.tensorflow</groupId>
@@ -40,11 +74,8 @@
 			<version>3.14.0.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-streams</artifactId>
-			<version>${kafka.version}</version>
-		</dependency>
+
+
 
 		<!-- Test dependencies -->
 		<dependency>

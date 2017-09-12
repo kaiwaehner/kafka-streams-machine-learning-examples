@@ -67,9 +67,9 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 
 		// Images: 'unknown', Airliner, 'unknown', Butterfly
 		List<String> inputValues = Arrays.asList(
-				"src/main/resources/images/trained_airplane_2.jpg",
-				"src/main/resources/images/devil.png",
-				"src/main/resources/images/trained_butterfly.jpg");
+				"src/main/resources/TensorFlow_Images/trained_airplane_2.jpg",
+				"src/main/resources/TensorFlow_Images/devil.png",
+				"src/main/resources/TensorFlow_Images/trained_butterfly.jpg");
 
 		// ########################################################
 		// Step 1: Configure and start the processor topology.

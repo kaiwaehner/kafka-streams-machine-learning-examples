@@ -1,6 +1,6 @@
 # Machine Learning + Kafka Streams Examples
 
-This project contains **examples which demonstrate how to deploy analytic models to mission-critical, scalable production leveraging Apache Kafka's Streams API.**
+This project contains **examples which demonstrate how to deploy analytic models to mission-critical, scalable production leveraging [Apache Kafka](https://kafka.apache.org/) and its [Streams API](docs.confluent.io/current/streams/index.html).**
 Examples will include analytic models built with TensorFlow, Keras, H2O, Python, DeepLearning4J and other technologies.
 
 ## Installation and Usage
@@ -18,7 +18,7 @@ The following examples are already available including unit tests:
 * Deployment of a H2O Deep Learning model to a Kafka Streams application for prediction of flight delays
 * Deployment of a pre-built TensorFlow CNN model for image recognition
 
-I also added a class for training a DeepLearning4J model. Implementation of the Java Class is still TODO.
+I also added a class for training a [DeepLearning4J](https://deeplearning4j.org/) model. Implementation of the Java Class is still TODO.
 
 More sophisticated use cases around Kafka Streams and other technologies will be added over time. Some ideas:
 * Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)

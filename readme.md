@@ -34,7 +34,7 @@ Gradient Boosting Method (GBM) to predict flight delays.
 A H2O generated GBM Java model (POJO) is instantiated and used in a Kafka Streams application to do interference on new events.
 
 **Machine Learning Technology**
-* [H2O](www.h2o.ai)
+* [H2O](https://www.h2o.ai)
 * Check the [H2O demo](https://github.com/h2oai/h2o-2/wiki/Hacking-Airline-DataSet-with-H2O) to understand the test and and how the model was built
 * You can re-use the generated Java model attached to this project ([gbm_pojo_test.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/models/gbm_pojo_test.java)) or build your own model using R, Python, Flow UI or any other technologies supported by H2O framework.
 

@@ -15,7 +15,10 @@ The unit tests use some Kafka helper classes like EmbeddedSingleNodeKafkaCluster
 ## Use Cases and Technologies
 The following examples are already available including unit tests:
 * Deployment of a H2O GBM model to a Kafka Streams application for prediction of flight delays
+* Deployment of a H2O Deep Learning model to a Kafka Streams application for prediction of flight delays
 * Deployment of a pre-built TensorFlow CNN model for image recognition
+
+I also added a class for training a DeepLearning4J model. Implementation of the Java Class is still TODO.
 
 More sophisticated use cases around Kafka Streams and other technologies will be added over time. Some ideas:
 * Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)
@@ -42,6 +45,9 @@ A H2O generated GBM Java model (POJO) is instantiated and used in a Kafka Stream
 **Unit Test**
 
 [MachineLearning_H2O_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest.java)
+
+The project includes another example with similar code to use a [H2O Deep Learning model](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/models/deeplearning_fe7c1f02_08ec_4070_b784_c2531147e451.java) instead of H2O GBM Model: [Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java)
+This shows how you can easily test or replace different analytic models for one use case, or even use them for A/B testing.
 
 ### Example 2 - Convolutional Neural Network (CNN) with TensorFlow for Image Recognition
 **Use Case**

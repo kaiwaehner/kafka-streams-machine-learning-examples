@@ -70,8 +70,7 @@ public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example {
 
 		
 		// Stream Processor (in this case 'foreach' to add custom logic, i.e. apply the analytic model)
-		airlineInputLines.foreach(new ForeachAction<String, String>() {
-			public void apply(String key, String value) {
+		airlineInputLines.foreach((key, value) -> {
 
 				// Year,Month,DayofMonth,DayOfWeek,DepTime,CRSDepTime,ArrTime,CRSArrTime,UniqueCarrier,FlightNum,TailNum,ActualElapsedTime,CRSElapsedTime,AirTime,ArrDelay,DepDelay,Origin,Dest,Distance,TaxiIn,TaxiOut,Cancelled,CancellationCode,Diverted,CarrierDelay,WeatherDelay,NASDelay,SecurityDelay,LateAircraftDelay,IsArrDelayed,IsDepDelayed
 				// value:
@@ -119,7 +118,7 @@ public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example {
 				}
 
 			}
-		});
+		);
 
 		// airlineInputLines.print();
 	

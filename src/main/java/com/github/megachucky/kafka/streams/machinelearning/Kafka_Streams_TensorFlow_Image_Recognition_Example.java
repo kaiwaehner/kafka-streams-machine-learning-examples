@@ -81,8 +81,7 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 
 			
 			// Stream Processor (in this case 'foreach' to add custom logic, i.e. apply the analytic model)
-			imageInputLines.foreach(new ForeachAction<String, String>() {
-				public void apply(String key, String value) {
+			imageInputLines.foreach((key, value) -> {
 
 					imageClassification = "unknown";
 					imageProbability = "unknown";
@@ -114,7 +113,7 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 					}
 
 				}
-			});
+			);
 
 	// airlineInputLines.print();
 

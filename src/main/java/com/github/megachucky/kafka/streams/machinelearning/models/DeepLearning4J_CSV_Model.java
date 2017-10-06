@@ -14,6 +14,7 @@ import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
+import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
@@ -97,6 +98,17 @@ public class DeepLearning4J_CSV_Model {
         INDArray output = model.output(testData.getFeatureMatrix());
         eval.eval(testData.getLabels(), output);
         log.info(eval.stats());
+        
+        //Save the model
+        File locationToSave = new File("src/main/resources/generatedModels/DL4J/DL4J_Iris_Model.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        boolean saveUpdater = true;                                             //Updater: i.e., the state for Momentum, RMSProp, Adagrad etc. Save this if you want to train your network more in the future
+        ModelSerializer.writeModel(model, locationToSave, saveUpdater);
+
+        //Load the model
+        MultiLayerNetwork restored = ModelSerializer.restoreMultiLayerNetwork(locationToSave);
+
+        System.out.println("Saved and loaded parameters are equal:      " + model.params().equals(restored.params()));
+        System.out.println("Saved and loaded configurations are equal:  " + model.getLayerWiseConfigurations().equals(restored.getLayerWiseConfigurations()));
     }
 
 }

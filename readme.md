@@ -17,8 +17,7 @@ The following examples are already available including unit tests:
 * Deployment of a H2O GBM model to a Kafka Streams application for prediction of flight delays
 * Deployment of a H2O Deep Learning model to a Kafka Streams application for prediction of flight delays
 * Deployment of a pre-built TensorFlow CNN model for image recognition
-
-I also added a class for training a [DeepLearning4J](https://deeplearning4j.org/) model. Implementation of the Java Class is still TODO.
+* Deployment of a DL4J model to predict the species of Iris flowers
 
 More sophisticated use cases around Kafka Streams and other technologies will be added over time. Some ideas:
 * Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)
@@ -57,7 +56,7 @@ A prebuilt TensorFlow CNN model is instantiated and used in a Kafka Streams appl
 
 **Machine Learning Technology**
 * [TensorFlow](https://www.tensorflow.org/)
-* Leverages [TensorFlow for Java](https://www.tensorflow.org/install/install_java). These APIs are particularly well-suited for loading models created in Python and executing them within a Java application. Please note: The Java API doesn't yet include convenience functions (which you might know from Keras), thus a private helper class is used in the example for construction and execution of the pre-built TensorFlow model.
+* Leverages [TensorFlow for Java](https://www.tensorflow.org/install/install_java). These APIs are particularly well-suited for loading models created in Python and executing them within a Java application. Please note: The Java API doesn't yet include convenience functions (which you might know from [Keras](https://keras.io/)), thus a private helper class is used in the example for construction and execution of the pre-built TensorFlow model.
 * Check the official TensorFlow demo [LabelImage](https://github.com/kaiwaehner/tensorflow/blob/r1.3/tensorflow/java/src/main/java/org/tensorflow/examples/LabelImage.java) to understand this image recognition example
 * You can re-use the pre-trained TensorFlow model attached to this project [tensorflow_inception_graph.pb](http://arxiv.org/abs/1512.00567) or add your own model.
 * The 'images' folder contains models which were used for training the model (trained_airplane_1.jpg, trained_airplane_2.jpg, trained_butterfly.jpg) but also a new picture (new_airplane.jpg) which is not known by the model and using a different resolution than the others. Feel free to add your own pictures (they need to be trained, see list of trained pictures in the file: imagenet_comp_graph_label_strings.txt), otherwise the model will return 'unknown'.
@@ -69,3 +68,18 @@ A prebuilt TensorFlow CNN model is instantiated and used in a Kafka Streams appl
 **Unit Test**
 
 [Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest.java)
+
+### Example 3 - Iris Prediction using a Neural Network with DeepLearning4J (DL4J)
+**Use Case**
+
+Iris Species Prediction using a Neural Network.
+This is a famous example: Prediction of the Iris Species - implemented with many different ML algorithms. Here I use DeepLearning4J (DL4J) to build a neural network using Iris Dataset.
+
+**Machine Learning Technology**
+* [DeepLearning4J](https://deeplearning4j.org)
+* Pretty simple example to demo how to build, save and load neural networks with DL4J. [MultiLayerNetwork](https://deeplearning4j.org/doc/org/deeplearning4j/nn/multilayer/MultiLayerNetwork.html) and [INDArray](http://nd4j.org/doc/org/nd4j/linalg/api/ndarray/INDArray.html) are the key APIs to look at if you want to understand the details.
+* The model is created via [DeepLearning4J_CSV_Model.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/models/DeepLearning4J_CSV_Model.java) and stored in the resources: [DL4J_Iris_Model.zip](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/tree/master/src/main/resources/generatedModels/DL4J). No need to re-train, just for reference.
+
+**Unit Test**
+
+[Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTest.java)

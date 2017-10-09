@@ -58,7 +58,6 @@
 		</dependency>
 
 
-
 		<!-- https://mvnrepository.com/artifact/org.tensorflow/tensorflow -->
 		<dependency>
 			<groupId>org.tensorflow</groupId>

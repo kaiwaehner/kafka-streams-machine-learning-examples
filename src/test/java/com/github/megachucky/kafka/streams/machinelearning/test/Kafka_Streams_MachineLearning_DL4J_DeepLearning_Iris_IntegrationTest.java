@@ -2,9 +2,11 @@ package  com.github.megachucky.kafka.streams.machinelearning.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -14,45 +16,43 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.ForeachAction;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.apache.kafka.test.TestUtils;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+
+import org.deeplearning4j.util.ModelSerializer;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
 
 import com.github.megachucky.kafka.streams.machinelearning.test.utils.EmbeddedSingleNodeKafkaCluster;
 import com.github.megachucky.kafka.streams.machinelearning.test.utils.IntegrationTestUtils;
-
-import hex.genmodel.easy.EasyPredictModelWrapper;
-import hex.genmodel.easy.RowData;
-import hex.genmodel.easy.exception.PredictException;
-import hex.genmodel.easy.prediction.BinomialModelPrediction;
 
 /**
  * 
  * @author Kai Waehner (www.kai-waehner.de)
  * 
- * End-to-end integration test based on {@link Kafka_Streams_MachineLearning_H2O_GBM_Example}, using an
- * embedded Kafka cluster and a H2O.ai GBM Model.
- *
- * See {@link Kafka_Streams_MachineLearning_H2O_GBM_Example} for further documentation.
- *
+ * End-to-end integration test, using an
+ * embedded Kafka cluster and a DL4J DeepLearning Model. 
+ * 
+ * Prediction of Iris Flower Type 1, 2 or 3. Model returns probability for all three types, like [0.00/  0.01/  0.99].
  */
-public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
+public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTest {
 
 	@ClassRule
 	public static final EmbeddedSingleNodeKafkaCluster CLUSTER = new EmbeddedSingleNodeKafkaCluster();
  
-	private static final String inputTopic = "AirlineInputTopic";
-	private static final String outputTopic = "AirlineOutputTopic";
+	private static final String inputTopic = "IrisInputTopic";
+	private static final String outputTopic = "IrisOutputTopic";
 
-	// Name of the generated H2O.ai model
-	private static String modelClassName = "com.github.megachucky.kafka.streams.machinelearning.models.gbm_pojo_test";
-
+	// Generated DL4J model
+	private File locationDL4JModel = new File("src/main/resources/generatedModels/DL4J/DL4J_Iris_Model.zip");
+	
 	// Prediction Value
-	private static String airlineDelayPreduction = "unknown";
+	private static String irisPrediction = "unknown";
 
 	@BeforeClass
 	public static void startKafkaCluster() throws Exception {
@@ -61,19 +61,17 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 	}
 
 	@Test
-	public void shouldPredictFlightDelay() throws Exception {
+	public void shouldPredictIrisFlowerType() throws Exception {
 
-		// Flight data (one single flight) --> We want to predict if it will be
-		// delayed or not
+		// Iris input data (the model returns probabilities for input being each of Iris Type 1, 2 and 3)
 		List<String> inputValues = Arrays.asList(
-				"1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES",
-				"1999,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES");
-
+				"5.4,3.9,1.7,0.4",
+				"7.0,3.2,4.7,1.4",
+				"4.6,3.4,1.4,0.3"); 
+		
 		// Step 1: Configure and start the processor topology.
-		//
-
 		Properties streamsConfiguration = new Properties();
-		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-h2o-gbm-integration-test");
+		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-dl4j-iris-integration-test");
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
 
 		// The commit interval for flushing records to state stores and
@@ -86,11 +84,9 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 		// automatically removed after the test.
 		streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getAbsolutePath());
 
-		// Create H2O object (see gbm_pojo_test.java)
-		hex.genmodel.GenModel rawModel;
-		rawModel = (hex.genmodel.GenModel) Class.forName(modelClassName).newInstance();
-		EasyPredictModelWrapper model = new EasyPredictModelWrapper(rawModel);
-
+		// Create DL4J object (see DeepLearning4J_CSV_Model.java)
+        MultiLayerNetwork model = ModelSerializer.restoreMultiLayerNetwork(locationDL4JModel);
+		
 		// Configure Kafka Streams Application
 		// Specify default (de)serializers for record keys and for record
 		// values.
@@ -101,64 +97,42 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 		// Streams application.
 		final KStreamBuilder builder = new KStreamBuilder();
 
-		// Construct a `KStream` from the input topic "AirlineInputTopic", where
+		// Construct a `KStream` from the input topic "IrisInputTopic", where
 		// message values
 		// represent lines of text (for the sake of this example, we ignore
 		// whatever may be stored
 		// in the message keys).
-		final KStream<String, String> airlineInputLines = builder.stream(inputTopic);
+		final KStream<String, String> irisInputLines = builder.stream(inputTopic);
 
-		// Stream Processor (in this case 'foreach' to add custom logic, i.e.
-		// apply the analytic model)
-		
-		
-		airlineInputLines.foreach((key, value) -> {
-
-				// Year,Month,DayofMonth,DayOfWeek,DepTime,CRSDepTime,ArrTime,CRSArrTime,UniqueCarrier,FlightNum,TailNum,ActualElapsedTime,CRSElapsedTime,AirTime,ArrDelay,DepDelay,Origin,Dest,Distance,TaxiIn,TaxiOut,Cancelled,CancellationCode,Diverted,CarrierDelay,WeatherDelay,NASDelay,SecurityDelay,LateAircraftDelay,IsArrDelayed,IsDepDelayed
-				// value:
-				// 1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES
-				if (value != null && !value.equals("")) {
+		// Stream Processor (in this case 'foreach' to add custom logic, i.e. apply the analytic model)
+		irisInputLines.foreach((key, value) -> {
+	
+			if (value != null && !value.equals("")) {
 					System.out.println("#####################");
-					System.out.println("Flight Input:" + value);
+					System.out.println("Iris Input:" + value);
 
-					String[] valuesArray = value.split(",");
+					// TODO Easier way to map from String[] to double[] !!!
+					String[] stringArray = value.split(",");
+					Double[] doubleArray = Arrays.stream(stringArray).map(Double::valueOf).toArray(Double[]::new);
+					double[] irisInput = Stream.of(doubleArray).mapToDouble(Double::doubleValue).toArray();
+					
+		        	// Inference
+		        	INDArray input = Nd4j.create(irisInput);
+		        	INDArray result = model.output(input);
 
-					RowData row = new RowData();
-					row.put("Year", valuesArray[0]);
-					row.put("Month", valuesArray[1]);
-					row.put("DayofMonth", valuesArray[2]);
-					row.put("DayOfWeek", valuesArray[3]);
-					row.put("CRSDepTime", valuesArray[5]);
-					row.put("UniqueCarrier", valuesArray[8]);
-					row.put("Origin", valuesArray[16]);
-					row.put("Dest", valuesArray[17]);
-					BinomialModelPrediction p = null;
-					try {
-						p = model.predictBinomial(row);
-					} catch (PredictException e) {
-						e.printStackTrace();
-					}
-
-					airlineDelayPreduction = p.label;
-					System.out.println("Label (aka prediction) is flight departure delayed: " + p.label);
-					System.out.print("Class probabilities: ");
-					for (int i = 0; i < p.classProbabilities.length; i++) {
-						if (i > 0) {
-							System.out.print(",");
-						}
-						System.out.print(p.classProbabilities[i]);
-					}
-					System.out.println("");
-					System.out.println("#####################");
+		            System.out.println("Probabilities: " + result.toString());
+		            
+		            irisPrediction = result.toString();
+	            
 
 				}
 
-			}
-		);
+			});
+		
 
 		// Transform message: Add prediction information
-		KStream<String, Object> transformedMessage = airlineInputLines
-				.mapValues(value -> "Prediction: Is Airline delayed? => " + airlineDelayPreduction);
+		KStream<String, Object> transformedMessage = irisInputLines
+				.mapValues(value -> "Prediction: Iris Probability => " + irisPrediction);
 
 		// Send prediction information to Output Topic
 		transformedMessage.to(outputTopic);
@@ -168,8 +142,8 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 		final KafkaStreams streams = new KafkaStreams(builder, streamsConfiguration);
 		streams.cleanUp();
 		streams.start();
-		System.out.println("Airline Delay Prediction Microservice is running...");
-		System.out.println("Input to Kafka Topic 'AirlineInputTopic'; Output to Kafka Topic 'AirlineOutpuTopic'");
+		System.out.println("Iris Prediction Microservice is running...");
+		System.out.println("Input to Kafka Topic 'IrisInputTopic'; Output to Kafka Topic 'IrisOutputTopic'");
 
 		//
 		// Step 2: Produce some input data to the input topic.
@@ -192,12 +166,15 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		List<KeyValue<String, String>> response = IntegrationTestUtils
-				.waitUntilMinKeyValueRecordsReceived(consumerConfig, outputTopic, 2);
+				.waitUntilMinKeyValueRecordsReceived(consumerConfig, outputTopic, 3);
 		streams.close();
 		assertThat(response).isNotNull();
-		assertThat(response.get(0).value).isEqualTo("Prediction: Is Airline delayed? => YES");
 		
-		assertThat(response.get(1).value).isEqualTo("Prediction: Is Airline delayed? => NO");
+		assertThat(response.get(0).value).isEqualTo("Prediction: Iris Probability => [0.29,  0.70,  0.01]");
+		
+		assertThat(response.get(1).value).isEqualTo("Prediction: Iris Probability => [0.00,  0.01,  0.99]");
+		
+		assertThat(response.get(2).value).isEqualTo("Prediction: Iris Probability => [0.36,  0.63,  0.01]");
 	}
 
 }

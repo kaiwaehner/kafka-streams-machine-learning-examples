@@ -45,6 +45,18 @@ A H2O generated GBM Java model (POJO) is instantiated and used in a Kafka Stream
 
 [MachineLearning_H2O_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest.java)
 
+**Manual Testing**
+
+You can easily test this by yourself. Here are the steps:
+- Start Kafka (e.g. with Confluent CLI: "confluent start kafka")
+- Create topics AirlineInputTopic and AirlineOutputTopic
+- Start the Kafka Streams app: java -cp target/kafka-streams-machine-learning-examples-1.0-SNAPSHOT-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
+- Send messages (e.g. with kafkacat: echo -e "1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES" | kafkacat -b localhost:9092 -P -t AirlineInputTopic)
+- Find more details in the unit test...
+
+
+**H2O Deep Learning instead of H2O GBM Model**
+
 The project includes another example with similar code to use a [H2O Deep Learning model](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/models/deeplearning_fe7c1f02_08ec_4070_b784_c2531147e451.java) instead of H2O GBM Model: [Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java)
 This shows how you can easily test or replace different analytic models for one use case, or even use them for A/B testing.
 

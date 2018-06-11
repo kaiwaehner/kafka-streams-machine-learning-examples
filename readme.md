@@ -3,6 +3,9 @@
 This project contains **examples which demonstrate how to deploy analytic models to mission-critical, scalable production leveraging [Apache Kafka](https://kafka.apache.org/) and its [Streams API](docs.confluent.io/current/streams/index.html).**
 Examples will include analytic models built with TensorFlow, Keras, H2O, Python, DeepLearning4J and other technologies.
 
+![Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure](http://www.kai-waehner.de/blog/wp-content/uploads/2017/10/Apache_Kafka_Ecosystem_Kafka_Streams_Machine_Learning.png "Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure")
+
+
 ## Material (Slides, Videos)
 Here is some material about this topic if you want to read and listen to the theory instead of just doing hands-on:
 - Blog Post: [How to Build and Deploy Scalable Machine Learning in Production with Apache Kafka](https://www.confluent.io/blog/build-deploy-scalable-machine-learning-production-apache-kafka/)

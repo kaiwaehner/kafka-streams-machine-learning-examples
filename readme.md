@@ -12,6 +12,7 @@ Here is some material about this topic if you want to read and listen to the the
 - Slide Deck: [Apache Kafka + Machine Learning => Intelligent Real Time Applications](https://www.slideshare.net/KaiWaehner/apache-kafka-streams-machine-learning-deep-learning)
 - Slide Deck: [Deep Learning at Extreme Scale (in the Cloud)  with the Apache Kafka Open Source Ecosystem](https://www.slideshare.net/KaiWaehner/deep-learning-at-extreme-scale-in-the-cloud-with-the-apache-kafka-open-source-ecosystem)
 - Video Recording: [Deep Learning in Mission Critical and Scalable Real Time Applications with Open Source Frameworks](https://vimeo.com/jaxtv/review/256406763/7fbf4213be)
+- Another Github Demo: [Continuous Health Checks with Anomaly Detection using KSQL, Kafka Connect, Deep Learning and Elasticsearch](https://github.com/kaiwaehner/ksql-fork-with-deep-learning-function)
 
 
 ## Installation and Usage

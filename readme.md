@@ -18,7 +18,9 @@ Here is some material about this topic if you want to read and listen to the the
 ## Installation and Usage
 Java 8 and Maven 3 are required. Maven will download all required dependencies.
 
-Just download the project and run 'mvn clean package'.
+Just download the project and run 
+
+                mvn clean package
 
 Every examples includes an implementation and an unit test. The examples are very simple and lightweight. No further configuration is needed to build and run it. Though, for this reason, the generated models are also included (and increase the download size of the project).
 
@@ -62,8 +64,10 @@ A H2O generated GBM Java model (POJO) is instantiated and used in a Kafka Stream
 You can easily test this by yourself. Here are the steps:
 - Start Kafka (e.g. with Confluent CLI: "confluent start kafka")
 - Create topics AirlineInputTopic and AirlineOutputTopic
-- Start the Kafka Streams app: java -cp target/kafka-streams-machine-learning-examples-1.0-SNAPSHOT-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
-- Send messages (e.g. with kafkacat: echo -e "1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES" | kafkacat -b localhost:9092 -P -t AirlineInputTopic)
+- Start the Kafka Streams app: 
+        java -cp target/kafka-streams-machine-learning-examples-1.0-SNAPSHOT-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
+- Send messages, e.g. with kafkacat: 
+        echo -e "1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES" | kafkacat -b localhost:9092 -P -t AirlineInputTopic
 - Find more details in the unit test...
 
 

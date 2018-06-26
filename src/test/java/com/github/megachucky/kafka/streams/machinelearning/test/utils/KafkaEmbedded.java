@@ -3,7 +3,8 @@ package com.github.megachucky.kafka.streams.machinelearning.test.utils;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
 import org.apache.kafka.common.network.ListenerName;
-import org.apache.kafka.common.protocol.SecurityProtocol;
+//import org.apache.kafka.common.protocol.SecurityProtocol;
+import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.utils.Time;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
@@ -71,10 +72,13 @@ public class KafkaEmbedded {
     effectiveConfig.put(KafkaConfig$.MODULE$.HostNameProp(), "127.0.0.1");
     effectiveConfig.put(KafkaConfig$.MODULE$.PortProp(), "9092");
     effectiveConfig.put(KafkaConfig$.MODULE$.NumPartitionsProp(), 1);
+    effectiveConfig.put(KafkaConfig$.MODULE$.DefaultReplicationFactorProp(), 1);
+    effectiveConfig.put(KafkaConfig$.MODULE$.NumReplicaFetchersProp(), 1);
+    effectiveConfig.put(KafkaConfig$.MODULE$.OffsetsTopicReplicationFactorProp(), (short)1);
     effectiveConfig.put(KafkaConfig$.MODULE$.AutoCreateTopicsEnableProp(), true);
     effectiveConfig.put(KafkaConfig$.MODULE$.MessageMaxBytesProp(), 1000000);
     effectiveConfig.put(KafkaConfig$.MODULE$.ControlledShutdownEnableProp(), true);
-
+      
     effectiveConfig.putAll(initialConfig);
     effectiveConfig.setProperty(KafkaConfig$.MODULE$.LogDirProp(), logDir.getAbsolutePath());
     return effectiveConfig;
@@ -86,8 +90,7 @@ public class KafkaEmbedded {
    * You can use this to tell Kafka producers and consumers how to connect to this instance.
    */
   public String brokerList() {
-    return String.join(":", kafka.config().hostName(), Integer.toString(kafka.boundPort(ListenerName.forSecurityProtocol(SecurityProtocol
-                                                                                            .PLAINTEXT))));
+    return String.join(":", kafka.config().hostName(), Integer.toString(kafka.boundPort(ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT))));
   }
 
 

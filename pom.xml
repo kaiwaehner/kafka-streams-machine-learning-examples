@@ -79,6 +79,14 @@
             <artifactId>google-api-services-ml</artifactId>
             <version>v1-rev53-1.23.0</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-discovery -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-discovery</artifactId>
+            <version>v1-rev21-1.13.2-beta</version>
+        </dependency>
+
 
 		<!-- Test dependencies -->
 		<dependency>

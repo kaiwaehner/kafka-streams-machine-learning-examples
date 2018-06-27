@@ -34,7 +34,7 @@
 			<artifactId>kafka-streams</artifactId>
 			<version>${kafka.version}</version>
 		</dependency>
-
+    
 		<!-- DeepLearning4J needs the following dependencies: 1) deeplearning4j-core, 
 			which contains the neural network implementations 2) nd4j-native-platform, 
 			the CPU version of the ND4J library that powers DL4J 3) datavec-api - Datavec 
@@ -72,9 +72,13 @@
 			<artifactId>h2o-genmodel</artifactId>
 			<version>3.14.0.1</version>
 		</dependency>
-
-
-
+       
+        <!-- Cloud Machine Learning Engine Client Library for Java (TensorFlow Serving in Google Cloud Platform) -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-ml</artifactId>
+            <version>v1-rev53-1.23.0</version>
+        </dependency>
 
 		<!-- Test dependencies -->
 		<dependency>

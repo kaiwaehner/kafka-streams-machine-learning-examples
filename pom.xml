@@ -73,19 +73,28 @@
 			<version>3.14.0.1</version>
 		</dependency>
        
-        <!-- Cloud Machine Learning Engine Client Library for Java (TensorFlow Serving in Google Cloud Platform) -->
+<!-- Cloud Machine Learning Engine Client Library for Java (TensorFlow Serving in Google Cloud Platform) -->
         <dependency>
-            <groupId>com.google.apis</groupId>
-            <artifactId>google-api-services-ml</artifactId>
-            <version>v1-rev53-1.23.0</version>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.23.0</version>
         </dependency>
-        
-        <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-discovery -->
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-discovery</artifactId>
-            <version>v1-rev21-1.13.2-beta</version>
+            <version>v1-rev64-1.23.0</version>
         </dependency>
+        
+            <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-storage</artifactId>
+      <version>1.34.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-appengine</artifactId>
+      <version>0.9.1</version>
+    </dependency>
 
 
 		<!-- Test dependencies -->

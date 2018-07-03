@@ -62,7 +62,8 @@ A H2O generated GBM Java model (POJO) is instantiated and used in a Kafka Stream
 **Manual Testing**
 
 You can easily test this by yourself. Here are the steps:
-- Start Kafka (e.g. with Confluent CLI: "confluent start kafka")
+- Start Kafka, e.g. with Confluent CLI:
+                confluent start kafka
 - Create topics AirlineInputTopic and AirlineOutputTopic
                 kafka-topics --zookeeper localhost:2181 --create --topic AirlineInputTopic --partitions 3 --replication-factor 1
 

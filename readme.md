@@ -6,12 +6,28 @@ Examples will include analytic models built with TensorFlow, Keras, H2O, Python,
 ![Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure](http://www.kai-waehner.de/blog/wp-content/uploads/2017/10/Apache_Kafka_Ecosystem_Kafka_Streams_Machine_Learning.png "Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure")
 
 
-## Material (Slides, Videos)
+## Material (Blogs Posts, Slides, Videos)
 Here is some material about this topic if you want to read and listen to the theory instead of just doing hands-on:
 - Blog Post: [How to Build and Deploy Scalable Machine Learning in Production with Apache Kafka](https://www.confluent.io/blog/build-deploy-scalable-machine-learning-production-apache-kafka/)
 - Slide Deck: [Apache Kafka + Machine Learning => Intelligent Real Time Applications](https://www.slideshare.net/KaiWaehner/apache-kafka-streams-machine-learning-deep-learning)
 - Slide Deck: [Deep Learning at Extreme Scale (in the Cloud)  with the Apache Kafka Open Source Ecosystem](https://www.slideshare.net/KaiWaehner/deep-learning-at-extreme-scale-in-the-cloud-with-the-apache-kafka-open-source-ecosystem)
 - Video Recording: [Deep Learning in Mission Critical and Scalable Real Time Applications with Open Source Frameworks](https://vimeo.com/jaxtv/review/256406763/7fbf4213be)
+
+## Use Cases and Technologies
+##### The following examples are already available including unit tests:
+* Deployment of a H2O GBM model to a Kafka Streams application for prediction of flight delays
+* Deployment of a H2O Deep Learning model to a Kafka Streams application for prediction of flight delays
+* Deployment of a pre-built TensorFlow CNN model for image recognition
+* Deployment of a DL4J model to predict the species of Iris flowers
+
+**More sophisticated use cases around Kafka Streams and other technologies will be added over time. Some ideas**:
+* Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)
+* Anomaly Detection with Autoencoders leveraging DeepLearning4J.
+* Cross Selling and Customer Churn Detection using classical Machine Learning algorithms but also Deep Learning
+* Stateful Stream Processing to combine different model execution steps into a more powerful workflow instead of "just" inferencing single events (a good example might be a streaming process with sliding or session windows).
+* Keras to build different models with Python, TensorFlow, Theano and other Deep Learning frameworks under the hood + Kafka Streams as generic Machine Learning infrastructure to deploy, execute and monitor these different models.
+
+##### Two other projects exist already with more ML + Kafka content:
 - KSQL ML Demo on Github: [Continuous Health Checks with Anomaly Detection using KSQL, Kafka Connect, Deep Learning and Elasticsearch](https://github.com/kaiwaehner/ksql-fork-with-deep-learning-function)
 - TensorFlow Serving + gRPC + Kafka Streams on Github => Stream Processing and RPC / Request-Response concepts combined: [Model inference with Apache Kafka, Kafka Streams and a TensorFlow model deployed on a TensorFlow Serving model server](https://github.com/kaiwaehner/tensorflow-serving-java-grpc-kafka-streams)
 
@@ -27,19 +43,6 @@ Every examples includes an implementation and an unit test. The examples are ver
 
 The unit tests use some Kafka helper classes like EmbeddedSingleNodeKafkaCluster in package "com.github.megachucky.kafka.streams.machinelearning.test.utils". If you want to run an implementation of a main class, you need to start a Kafka cluster (with at least one Zookeeper and one Kafka broker running) and also create the required topics.
 
-## Use Cases and Technologies
-The following examples are already available including unit tests:
-* Deployment of a H2O GBM model to a Kafka Streams application for prediction of flight delays
-* Deployment of a H2O Deep Learning model to a Kafka Streams application for prediction of flight delays
-* Deployment of a pre-built TensorFlow CNN model for image recognition
-* Deployment of a DL4J model to predict the species of Iris flowers
-
-More sophisticated use cases around Kafka Streams and other technologies will be added over time. Some ideas:
-* Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)
-* Anomaly Detection with Autoencoders leveraging DeepLearning4J.
-* Cross Selling and Customer Churn Detection using classical Machine Learning algorithms but also Deep Learning
-* Stateful Stream Processing to combine different model execution steps into a more powerful workflow instead of "just" inferencing single events (a good example might be a streaming process with sliding or session windows).
-* Keras to build different models with Python, TensorFlow, Theano and other Deep Learning frameworks under the hood + Kafka Streams as generic Machine Learning infrastructure to deploy, execute and monitor these different models.
 
 ### Example 1 - Gradient Boosting with H2O.ai for Prediction of Flight Delays
 **Use Case**

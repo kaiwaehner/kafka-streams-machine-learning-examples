@@ -1,4 +1,4 @@
-package  com.github.megachucky.kafka.streams.machinelearning.test;
+package com.github.megachucky.kafka.streams.machinelearning.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,12 +15,11 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.apache.kafka.test.TestUtils;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-
 import org.deeplearning4j.util.ModelSerializer;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -35,22 +34,23 @@ import com.github.megachucky.kafka.streams.machinelearning.test.utils.Integratio
  * 
  * @author Kai Waehner (www.kai-waehner.de)
  * 
- * End-to-end integration test, using an
- * embedded Kafka cluster and a DL4J DeepLearning Model. 
+ *         End-to-end integration test, using an embedded Kafka cluster and a
+ *         DL4J DeepLearning Model.
  * 
- * Prediction of Iris Flower Type 1, 2 or 3. Model returns probability for all three types, like [0.00/  0.01/  0.99].
+ *         Prediction of Iris Flower Type 1, 2 or 3. Model returns probability
+ *         for all three types, like [0.00/ 0.01/ 0.99].
  */
 public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTest {
 
 	@ClassRule
 	public static final EmbeddedSingleNodeKafkaCluster CLUSTER = new EmbeddedSingleNodeKafkaCluster();
- 
+
 	private static final String inputTopic = "IrisInputTopic";
 	private static final String outputTopic = "IrisOutputTopic";
 
 	// Generated DL4J model
 	private File locationDL4JModel = new File("src/main/resources/generatedModels/DL4J/DL4J_Iris_Model.zip");
-	
+
 	// Prediction Value
 	private static String irisPrediction = "unknown";
 
@@ -63,12 +63,10 @@ public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTes
 	@Test
 	public void shouldPredictIrisFlowerType() throws Exception {
 
-		// Iris input data (the model returns probabilities for input being each of Iris Type 1, 2 and 3)
-		List<String> inputValues = Arrays.asList(
-				"5.4,3.9,1.7,0.4",
-				"7.0,3.2,4.7,1.4",
-				"4.6,3.4,1.4,0.3"); 
-		
+		// Iris input data (the model returns probabilities for input being each of Iris
+		// Type 1, 2 and 3)
+		List<String> inputValues = Arrays.asList("5.4,3.9,1.7,0.4", "7.0,3.2,4.7,1.4", "4.6,3.4,1.4,0.3");
+
 		// Step 1: Configure and start the processor topology.
 		Properties streamsConfiguration = new Properties();
 		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-dl4j-iris-integration-test");
@@ -85,17 +83,17 @@ public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTes
 		streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getAbsolutePath());
 
 		// Create DL4J object (see DeepLearning4J_CSV_Model.java)
-        MultiLayerNetwork model = ModelSerializer.restoreMultiLayerNetwork(locationDL4JModel);
-		
+		MultiLayerNetwork model = ModelSerializer.restoreMultiLayerNetwork(locationDL4JModel);
+
 		// Configure Kafka Streams Application
 		// Specify default (de)serializers for record keys and for record
 		// values.
-		streamsConfiguration.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-		streamsConfiguration.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+		streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+		streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
 		// In the subsequent lines we define the processing topology of the
 		// Streams application.
-		final KStreamBuilder builder = new KStreamBuilder();
+		final StreamsBuilder builder = new StreamsBuilder();
 
 		// Construct a `KStream` from the input topic "IrisInputTopic", where
 		// message values
@@ -104,31 +102,30 @@ public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTes
 		// in the message keys).
 		final KStream<String, String> irisInputLines = builder.stream(inputTopic);
 
-		// Stream Processor (in this case 'foreach' to add custom logic, i.e. apply the analytic model)
+		// Stream Processor (in this case 'foreach' to add custom logic, i.e. apply the
+		// analytic model)
 		irisInputLines.foreach((key, value) -> {
-	
+
 			if (value != null && !value.equals("")) {
-					System.out.println("#####################");
-					System.out.println("Iris Input:" + value);
+				System.out.println("#####################");
+				System.out.println("Iris Input:" + value);
 
-					// TODO Easier way to map from String[] to double[] !!!
-					String[] stringArray = value.split(",");
-					Double[] doubleArray = Arrays.stream(stringArray).map(Double::valueOf).toArray(Double[]::new);
-					double[] irisInput = Stream.of(doubleArray).mapToDouble(Double::doubleValue).toArray();
-					
-		        	// Inference
-		        	INDArray input = Nd4j.create(irisInput);
-		        	INDArray result = model.output(input);
+				// TODO Easier way to map from String[] to double[] !!!
+				String[] stringArray = value.split(",");
+				Double[] doubleArray = Arrays.stream(stringArray).map(Double::valueOf).toArray(Double[]::new);
+				double[] irisInput = Stream.of(doubleArray).mapToDouble(Double::doubleValue).toArray();
 
-		            System.out.println("Probabilities: " + result.toString());
-		            
-		            irisPrediction = result.toString();
-	            
+				// Inference
+				INDArray input = Nd4j.create(irisInput);
+				INDArray result = model.output(input);
 
-				}
+				System.out.println("Probabilities: " + result.toString());
 
-			});
-		
+				irisPrediction = result.toString();
+
+			}
+
+		});
 
 		// Transform message: Add prediction information
 		KStream<String, Object> transformedMessage = irisInputLines
@@ -139,7 +136,7 @@ public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTes
 
 		// Start Kafka Streams Application to process new incoming messages from
 		// Input Topic
-		final KafkaStreams streams = new KafkaStreams(builder, streamsConfiguration);
+		final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
 		streams.cleanUp();
 		streams.start();
 		System.out.println("Iris Prediction Microservice is running...");
@@ -161,7 +158,8 @@ public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTes
 		//
 		Properties consumerConfig = new Properties();
 		consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
-		consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG, "machine-learning-example-integration-test-standard-consumer");
+		consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG,
+				"machine-learning-example-integration-test-standard-consumer");
 		consumerConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -169,11 +167,11 @@ public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTes
 				.waitUntilMinKeyValueRecordsReceived(consumerConfig, outputTopic, 3);
 		streams.close();
 		assertThat(response).isNotNull();
-		
+
 		assertThat(response.get(0).value).isEqualTo("Prediction: Iris Probability => [0.29,  0.70,  0.01]");
-		
+
 		assertThat(response.get(1).value).isEqualTo("Prediction: Iris Probability => [0.00,  0.01,  0.99]");
-		
+
 		assertThat(response.get(2).value).isEqualTo("Prediction: Iris Probability => [0.36,  0.63,  0.01]");
 	}
 

@@ -1,4 +1,4 @@
-package  com.github.megachucky.kafka.streams.machinelearning.test;
+package com.github.megachucky.kafka.streams.machinelearning.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,11 +18,9 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.ForeachAction;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KStreamBuilder;
-import org.apache.kafka.test.TestUtils;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -40,16 +38,17 @@ import com.github.megachucky.kafka.streams.machinelearning.test.utils.Integratio
  * 
  * @author Kai Waehner (www.kai-waehner.de)
  * 
- * End-to-end integration test based on {@link Kafka_Streams_TensorFlow_Image_Recognition_Example}, using an
- * embedded Kafka cluster and a TensorFlow CNN model.
+ *         End-to-end integration test based on
+ *         {@link Kafka_Streams_TensorFlow_Image_Recognition_Example}, using an
+ *         embedded Kafka cluster and a TensorFlow CNN model.
  *
- * *
+ *         *
  */
 public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest {
 
 	@ClassRule
 	public static final EmbeddedSingleNodeKafkaCluster CLUSTER = new EmbeddedSingleNodeKafkaCluster();
- 
+
 	private static final String inputTopic = "ImageInputTopic";
 	private static final String outputTopic = "ImageOutputTopic";
 
@@ -66,8 +65,7 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 	public void shouldRecognizeImages() throws Exception {
 
 		// Images: 'unknown', Airliner, 'unknown', Butterfly
-		List<String> inputValues = Arrays.asList(
-				"src/main/resources/TensorFlow_Images/trained_airplane_2.jpg",
+		List<String> inputValues = Arrays.asList("src/main/resources/TensorFlow_Images/trained_airplane_2.jpg",
 				"src/main/resources/TensorFlow_Images/devil.png",
 				"src/main/resources/TensorFlow_Images/trained_butterfly.jpg");
 
@@ -76,30 +74,28 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 		// ########################################################
 
 		Properties streamsConfiguration = new Properties();
-		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-tensorflow-image-recognition-integration-test");
+		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG,
+				"kafka-streams-tensorflow-image-recognition-integration-test");
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
 
-	
 		// Create TensorFlow object
-	    String modelDir = "src/main/resources/generatedModels/CNN_inception5h";
-	    
-	    Path pathGraph = Paths.get(modelDir, "tensorflow_inception_graph.pb");
-	    byte[] graphDef = Files.readAllBytes(pathGraph);
-	    		    
-	    Path pathModel = Paths.get(modelDir, "imagenet_comp_graph_label_strings.txt");
-	    List<String> labels = Files.readAllLines(pathModel, Charset.forName("UTF-8"));
-	      
-	    
-	    
+		String modelDir = "src/main/resources/generatedModels/CNN_inception5h";
+
+		Path pathGraph = Paths.get(modelDir, "tensorflow_inception_graph.pb");
+		byte[] graphDef = Files.readAllBytes(pathGraph);
+
+		Path pathModel = Paths.get(modelDir, "imagenet_comp_graph_label_strings.txt");
+		List<String> labels = Files.readAllLines(pathModel, Charset.forName("UTF-8"));
+
 		// Configure Kafka Streams Application
 		// Specify default (de)serializers for record keys and for record
 		// values.
-		streamsConfiguration.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-		streamsConfiguration.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+		streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+		streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
 		// In the subsequent lines we define the processing topology of the
 		// Streams application.
-		final KStreamBuilder builder = new KStreamBuilder();
+		final StreamsBuilder builder = new StreamsBuilder();
 
 		// Construct a `KStream` from the input topic "AirlineInputTopic", where
 		// message values
@@ -112,34 +108,31 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 		// apply the analytic model)
 		imageInputLines.foreach((key, value) -> {
 
-				imageClassification = "unknown";
-				
-				String imageFile = value;
+			imageClassification = "unknown";
 
-			    Path pathImage = Paths.get(imageFile);
-			    byte[] imageBytes;
-				try {
-					imageBytes = Files.readAllBytes(pathImage);
-					
-					// Load and execute TensorFlow graph
-					try (Tensor image = constructAndExecuteGraphToNormalizeImage(imageBytes)) {
-					      float[] labelProbabilities = executeInceptionGraph(graphDef, image);
-					      int bestLabelIdx = maxIndex(labelProbabilities);
-					      
-					      imageClassification = labels.get(bestLabelIdx);
-					      
-					      System.out.println(
-					          String.format(
-					              "BEST MATCH: %s (%.2f%% likely)",
-					              imageClassification, labelProbabilities[bestLabelIdx] * 100f));
-					    }
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}			
+			String imageFile = value;
 
+			Path pathImage = Paths.get(imageFile);
+			byte[] imageBytes;
+			try {
+				imageBytes = Files.readAllBytes(pathImage);
+
+				// Load and execute TensorFlow graph
+				try (Tensor image = constructAndExecuteGraphToNormalizeImage(imageBytes)) {
+					float[] labelProbabilities = executeInceptionGraph(graphDef, image);
+					int bestLabelIdx = maxIndex(labelProbabilities);
+
+					imageClassification = labels.get(bestLabelIdx);
+
+					System.out.println(String.format("BEST MATCH: %s (%.2f%% likely)", imageClassification,
+							labelProbabilities[bestLabelIdx] * 100f));
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		);
+
+		});
 
 		// Transform message: Add prediction information
 		KStream<String, Object> transformedMessage = imageInputLines
@@ -150,7 +143,7 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 
 		// Start Kafka Streams Application to process new incoming messages from
 		// Input Topic
-		final KafkaStreams streams = new KafkaStreams(builder, streamsConfiguration);
+		final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
 		streams.cleanUp();
 		streams.start();
 		System.out.println("Image Recognition Microservice is running...");
@@ -174,7 +167,8 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 
 		Properties consumerConfig = new Properties();
 		consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
-		consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG, "kafka-streams-tensorflow-image-recognition-integration-test-standard-consumer");
+		consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG,
+				"kafka-streams-tensorflow-image-recognition-integration-test-standard-consumer");
 		consumerConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -183,14 +177,16 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 		streams.close();
 		assertThat(response).isNotNull();
 		assertThat(response.get(0).value).isEqualTo("Image Recognition: What is content of the picture? => airliner");
-		assertThat(response.get(1).value).isNotEqualTo("Image Recognition: What is content of the picture? => airliner");
-		assertThat(response.get(2).value).isEqualTo("Image Recognition: What is content of the picture? => cabbage butterfly");
+		assertThat(response.get(1).value)
+				.isNotEqualTo("Image Recognition: What is content of the picture? => airliner");
+		assertThat(response.get(2).value)
+				.isEqualTo("Image Recognition: What is content of the picture? => cabbage butterfly");
 
 	}
-	
-	
+
 	// ########################################################################################
-	// Private helper class for construction and execution of the pre-built TensorFlow model
+	// Private helper class for construction and execution of the pre-built
+	// TensorFlow model
 	// ########################################################################################
 
 	private static Tensor constructAndExecuteGraphToNormalizeImage(byte[] imageBytes) {
@@ -299,6 +295,5 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 
 		private Graph g;
 	}
-	
 
 }

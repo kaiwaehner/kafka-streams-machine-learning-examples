@@ -16,10 +16,13 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.common.utils.MockTime;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.integration.utils.EmbeddedKafkaCluster;
+import org.apache.kafka.streams.integration.utils.IntegrationTestUtils;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -31,8 +34,6 @@ import org.tensorflow.Session;
 import org.tensorflow.Tensor;
 
 import com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_TensorFlow_Image_Recognition_Example;
-import com.github.megachucky.kafka.streams.machinelearning.test.utils.EmbeddedSingleNodeKafkaCluster;
-import com.github.megachucky.kafka.streams.machinelearning.test.utils.IntegrationTestUtils;
 
 /**
  * 
@@ -47,7 +48,7 @@ import com.github.megachucky.kafka.streams.machinelearning.test.utils.Integratio
 public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest {
 
 	@ClassRule
-	public static final EmbeddedSingleNodeKafkaCluster CLUSTER = new EmbeddedSingleNodeKafkaCluster();
+	public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(1);
 
 	private static final String inputTopic = "ImageInputTopic";
 	private static final String outputTopic = "ImageOutputTopic";
@@ -159,7 +160,7 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 		producerConfig.put(ProducerConfig.RETRIES_CONFIG, 0);
 		producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		IntegrationTestUtils.produceValuesSynchronously(inputTopic, inputValues, producerConfig);
+		IntegrationTestUtils.produceValuesSynchronously(inputTopic, inputValues, producerConfig, new MockTime());
 
 		// ########################################################
 		// Step 3: Verify the application's output data.

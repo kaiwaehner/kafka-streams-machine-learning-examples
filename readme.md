@@ -39,6 +39,8 @@ Just download the project and run
 
                 mvn clean package
 
+Apache Kafka 2.0 is currently used. The code is also compatible with Kafka and Kafka Streams 1.1.
+
 Every examples includes an implementation and an unit test. The examples are very simple and lightweight. No further configuration is needed to build and run it. Though, for this reason, the generated models are also included (and increase the download size of the project).
 
 The unit tests use some Kafka helper classes like EmbeddedSingleNodeKafkaCluster in package "com.github.megachucky.kafka.streams.machinelearning.test.utils". If you want to run an implementation of a main class, you need to start a Kafka cluster (with at least one Zookeeper and one Kafka broker running) and also create the required topics.

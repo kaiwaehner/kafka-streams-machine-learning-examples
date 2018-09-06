@@ -32,7 +32,9 @@ Here is some material about this topic if you want to read and listen to the the
 - TensorFlow Serving + gRPC + Kafka Streams on Github => Stream Processing and RPC / Request-Response concepts combined: [Model inference with Apache Kafka, Kafka Streams and a TensorFlow model deployed on a TensorFlow Serving model server](https://github.com/kaiwaehner/tensorflow-serving-java-grpc-kafka-streams)
 
 
-## Installation and Usage
+## Requirements, Installation and Usage
+The code is developed and tested on Mac and Linux operating systems. As Kafka does not support and work well on Windows, this is not tested at all.
+
 Java 8 and Maven 3 are required. Maven will download all required dependencies.
 
 Just download the project and run 

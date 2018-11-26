@@ -168,11 +168,18 @@ public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTes
 		streams.close();
 		assertThat(response).isNotNull();
 
-		assertThat(response.get(0).value).isEqualTo("Prediction: Iris Probability => [0.29,  0.70,  0.01]");
+		System.out.println("RESPONSE");
+		System.out.println(response.get(0).value);
+		System.out.println("RESPONSE");
 
-		assertThat(response.get(1).value).isEqualTo("Prediction: Iris Probability => [0.00,  0.01,  0.99]");
+		assertThat(response.get(0).value)
+				.isEqualTo("Prediction: Iris Probability => [[    0.0033,    0.1635,    0.8332]]");
 
-		assertThat(response.get(2).value).isEqualTo("Prediction: Iris Probability => [0.36,  0.63,  0.01]");
+		assertThat(response.get(1).value)
+				.isEqualTo("Prediction: Iris Probability => [[ 9.3033e-5,    0.0030,    0.9969]]");
+
+		assertThat(response.get(2).value)
+				.isEqualTo("Prediction: Iris Probability => [[    0.0113,    0.8152,    0.1736]]");
 	}
 
 }

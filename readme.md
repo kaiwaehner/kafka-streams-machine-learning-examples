@@ -12,6 +12,7 @@ Here is some material about this topic if you want to read and listen to the the
 - Slide Deck: [Apache Kafka + Machine Learning => Intelligent Real Time Applications](https://www.slideshare.net/KaiWaehner/apache-kafka-streams-machine-learning-deep-learning)
 - Slide Deck: [Deep Learning at Extreme Scale (in the Cloud)  with the Apache Kafka Open Source Ecosystem](https://www.slideshare.net/KaiWaehner/deep-learning-at-extreme-scale-in-the-cloud-with-the-apache-kafka-open-source-ecosystem)
 - Video Recording: [Deep Learning in Mission Critical and Scalable Real Time Applications with Open Source Frameworks](https://vimeo.com/jaxtv/review/256406763/7fbf4213be)
+- Blog Post: [Using Apache Kafka to Drive Cutting-Edge Machine Learning - Hybrid ML Architectures, AutoML, and more...](https://www.confluent.io/blog/using-apache-kafka-drive-cutting-edge-machine-learning)
 
 ## Use Cases and Technologies
 ##### The following examples are already available including unit tests:

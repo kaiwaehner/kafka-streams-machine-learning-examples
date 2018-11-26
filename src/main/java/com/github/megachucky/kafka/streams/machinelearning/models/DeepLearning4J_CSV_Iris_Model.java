@@ -2,8 +2,6 @@ package com.github.megachucky.kafka.streams.machinelearning.models;
 
 import java.io.File;
 
-import java.io.File;
-
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
@@ -94,7 +92,9 @@ public class DeepLearning4J_CSV_Iris_Model {
 
         // evaluate the model on the test set
         Evaluation eval = new Evaluation(3);
-        INDArray output = model.output(testData.getFeatures());
+        INDArray input = testData.getFeatures();
+        INDArray output = model.output(input);
+        System.out.println("INPUT:" + input.toString());
         eval.eval(testData.getLabels(), output);
         log.info(eval.stats());
 
@@ -108,7 +108,7 @@ public class DeepLearning4J_CSV_Iris_Model {
         // externally
         boolean saveUpdater = true; // Updater: i.e., the state for Momentum, RMSProp, Adagrad etc. Save this if you
         // want to train your network more in the future
-        ModelSerializer.writeModel(model, locationToSave, saveUpdater);
+        // ModelSerializer.writeModel(model, locationToSave, saveUpdater);
 
         // Load the model
         MultiLayerNetwork restored = ModelSerializer.restoreMultiLayerNetwork(locationToSave);

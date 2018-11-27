@@ -20,16 +20,18 @@ Here is some material about this topic if you want to read and listen to the the
 * Deployment of a H2O Deep Learning model to a Kafka Streams application for prediction of flight delays
 * Deployment of a pre-built TensorFlow CNN model for image recognition
 * Deployment of a DL4J model to predict the species of Iris flowers
+* Deployment of a Keras model (trained with TensorFlow backend) using the Import Model API from DeepLearning4J
 
-**More sophisticated use cases around Kafka Streams and other technologies will be added over time. Some ideas**:
+**More sophisticated use cases around Kafka Streams and other technologies will be added over time in this or related Github project. Some ideas**:
 * Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)
 * Anomaly Detection with Autoencoders leveraging DeepLearning4J.
 * Cross Selling and Customer Churn Detection using classical Machine Learning algorithms but also Deep Learning
 * Stateful Stream Processing to combine different model execution steps into a more powerful workflow instead of "just" inferencing single events (a good example might be a streaming process with sliding or session windows).
 * Keras to build different models with Python, TensorFlow, Theano and other Deep Learning frameworks under the hood + Kafka Streams as generic Machine Learning infrastructure to deploy, execute and monitor these different models.
 
-##### Two other projects exist already with more ML + Kafka content:
-- KSQL ML Demo on Github: [Continuous Health Checks with Anomaly Detection using KSQL, Kafka Connect, Deep Learning and Elasticsearch](https://github.com/kaiwaehner/ksql-fork-with-deep-learning-function)
+##### Some other Github projects exist already with more ML + Kafka content:
+- Deep Learning UDF for KSQL: [Streaming Anomaly Detection of MQTT IoT Sensor Data using an Autoencoder](https://github.com/kaiwaehner/ksql-udf-deep-learning-mqtt-iot)
+- End-to-End ML Integration Demo: [Continuous Health Checks with Anomaly Detection using KSQL, Kafka Connect, Deep Learning and Elasticsearch](https://github.com/kaiwaehner/ksql-fork-with-deep-learning-function)
 - TensorFlow Serving + gRPC + Kafka Streams on Github => Stream Processing and RPC / Request-Response concepts combined: [Model inference with Apache Kafka, Kafka Streams and a TensorFlow model deployed on a TensorFlow Serving model server](https://github.com/kaiwaehner/tensorflow-serving-java-grpc-kafka-streams)
 
 
@@ -44,9 +46,12 @@ Just download the project and run
 
 Apache Kafka 2.0 is currently used. The code is also compatible with Kafka and Kafka Streams 1.1.
 
+**Please make sure to run the Maven build without any changes first.** If it works without errors, you can change library versions, Java version, etc. and see if it still works or if you need to adjust code. 
+
 Every examples includes an implementation and an unit test. The examples are very simple and lightweight. No further configuration is needed to build and run it. Though, for this reason, the generated models are also included (and increase the download size of the project).
 
-The unit tests use some Kafka helper classes like EmbeddedSingleNodeKafkaCluster in package "com.github.megachucky.kafka.streams.machinelearning.test.utils". If you want to run an implementation of a main class, you need to start a Kafka cluster (with at least one Zookeeper and one Kafka broker running) and also create the required topics.
+The unit tests use some Kafka helper classes like EmbeddedSingleNodeKafkaCluster in package **com.github.megachucky.kafka.streams.machinelearning.test.utils** so that you can run it without any other configuration or Kafka setup. 
+If you want to run an implementation of a main class in package **com.github.megachucky.kafka.streams.machinelearning**, you need to start a Kafka cluster (with at least one Zookeeper and one Kafka broker running) and also create the required topics. So check out the unit tests first.
 
 
 ### Example 1 - Gradient Boosting with H2O.ai for Prediction of Flight Delays

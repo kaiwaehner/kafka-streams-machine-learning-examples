@@ -15,14 +15,17 @@ Here is some material about this topic if you want to read and listen to the the
 - Blog Post: [Using Apache Kafka to Drive Cutting-Edge Machine Learning - Hybrid ML Architectures, AutoML, and more...](https://www.confluent.io/blog/using-apache-kafka-drive-cutting-edge-machine-learning)
 
 ## Use Cases and Technologies
+
 ##### The following examples are already available including unit tests:
+
 * Deployment of a H2O GBM model to a Kafka Streams application for prediction of flight delays
 * Deployment of a H2O Deep Learning model to a Kafka Streams application for prediction of flight delays
 * Deployment of a pre-built TensorFlow CNN model for image recognition
 * Deployment of a DL4J model to predict the species of Iris flowers
 * Deployment of a Keras model (trained with TensorFlow backend) using the Import Model API from DeepLearning4J
 
-**More sophisticated use cases around Kafka Streams and other technologies will be added over time in this or related Github project. Some ideas**:
+** More sophisticated use cases around Kafka Streams and other technologies will be added over time in this or related Github project. Some ideas**:
+
 * Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)
 * Anomaly Detection with Autoencoders leveraging DeepLearning4J.
 * Cross Selling and Customer Churn Detection using classical Machine Learning algorithms but also Deep Learning
@@ -30,10 +33,10 @@ Here is some material about this topic if you want to read and listen to the the
 * Keras to build different models with Python, TensorFlow, Theano and other Deep Learning frameworks under the hood + Kafka Streams as generic Machine Learning infrastructure to deploy, execute and monitor these different models.
 
 ##### Some other Github projects exist already with more ML + Kafka content:
+
 - Deep Learning UDF for KSQL: [Streaming Anomaly Detection of MQTT IoT Sensor Data using an Autoencoder](https://github.com/kaiwaehner/ksql-udf-deep-learning-mqtt-iot)
 - End-to-End ML Integration Demo: [Continuous Health Checks with Anomaly Detection using KSQL, Kafka Connect, Deep Learning and Elasticsearch](https://github.com/kaiwaehner/ksql-fork-with-deep-learning-function)
 - TensorFlow Serving + gRPC + Kafka Streams on Github => Stream Processing and RPC / Request-Response concepts combined: [Model inference with Apache Kafka, Kafka Streams and a TensorFlow model deployed on a TensorFlow Serving model server](https://github.com/kaiwaehner/tensorflow-serving-java-grpc-kafka-streams)
-
 
 ## Requirements, Installation and Usage
 The code is developed and tested on Mac and Linux operating systems. As Kafka does not support and work well on Windows, this is not tested at all.
@@ -44,7 +47,7 @@ Just download the project and run
 
                 mvn clean package
 
-Apache Kafka 2.0 is currently used. The code is also compatible with Kafka and Kafka Streams 1.1.
+Apache Kafka 2.1 is currently used. The code is also compatible with Kafka and Kafka Streams 1.1 and 2.0.
 
 **Please make sure to run the Maven build without any changes first.** If it works without errors, you can change library versions, Java version, etc. and see if it still works or if you need to adjust code. 
 
@@ -55,12 +58,14 @@ If you want to run an implementation of a main class in package **com.github.meg
 
 
 ### Example 1 - Gradient Boosting with H2O.ai for Prediction of Flight Delays
+
 **Use Case**
 
 Gradient Boosting Method (GBM) to predict flight delays.
 A H2O generated GBM Java model (POJO) is instantiated and used in a Kafka Streams application to do interference on new events.
 
 **Machine Learning Technology**
+
 * [H2O](https://www.h2o.ai)
 * Check the [H2O demo](https://github.com/h2oai/h2o-2/wiki/Hacking-Airline-DataSet-with-H2O) to understand the test and and how the model was built
 * You can re-use the generated Java model attached to this project ([gbm_pojo_test.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/models/gbm_pojo_test.java)) or build your own model using R, Python, Flow UI or any other technologies supported by H2O framework.

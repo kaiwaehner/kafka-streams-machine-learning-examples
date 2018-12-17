@@ -5,7 +5,7 @@
 
 	<groupId>com.github.kaiwaehner.kafka.streams.machinelearning</groupId>
 	<artifactId>kafka-streams-machine-learning-examples</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>CP51_AK21</version>
 
 	<repositories>
 		<repository>
@@ -16,10 +16,10 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<kafka.version>2.0.0</kafka.version>
+		<kafka.version>2.1.0</kafka.version>
 		<kafka.scala.version>2.11</kafka.scala.version>
 		<scala.version>${kafka.scala.version}.8</scala.version>
-		<confluent.version>5.0.0</confluent.version>
+		<confluent.version>5.1.0</confluent.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

@@ -24,7 +24,7 @@ Here is some material about this topic if you want to read and listen to the the
 * Deployment of a DL4J model to predict the species of Iris flowers
 * Deployment of a Keras model (trained with TensorFlow backend) using the Import Model API from DeepLearning4J
 
-** More sophisticated use cases around Kafka Streams and other technologies will be added over time in this or related Github project. Some ideas**:
+**More sophisticated use cases around Kafka Streams and other technologies will be added over time in this or related Github project. Some ideas**:
 
 * Image Recognition with H2O and TensorFlow (to show the difference of using H2O instead of using just low level TensorFlow APIs)
 * Anomaly Detection with Autoencoders leveraging DeepLearning4J.

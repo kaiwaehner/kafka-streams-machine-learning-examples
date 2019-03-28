@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.kaiwaehner.kafka.streams.machinelearning</groupId>
-	<artifactId>dl4j-deepLearning-iris</artifactId>
+	<artifactId>dl4j-deeplearning-iris</artifactId>
 	<version>CP51_AK21</version>
 
 	<repositories>

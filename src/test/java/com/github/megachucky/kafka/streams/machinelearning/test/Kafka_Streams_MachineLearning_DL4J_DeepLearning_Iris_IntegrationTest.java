@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+import com.github.jukkakarvanen.kafka.streams.integration.utils.TestEmbeddedKafkaCluster;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -43,7 +44,7 @@ import org.nd4j.linalg.factory.Nd4j;
 public class Kafka_Streams_MachineLearning_DL4J_DeepLearning_Iris_IntegrationTest {
 
 	@ClassRule
-	public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(1);
+	public static final EmbeddedKafkaCluster CLUSTER = new TestEmbeddedKafkaCluster(1);
 
 	private static final String inputTopic = "IrisInputTopic";
 	private static final String outputTopic = "IrisOutputTopic";

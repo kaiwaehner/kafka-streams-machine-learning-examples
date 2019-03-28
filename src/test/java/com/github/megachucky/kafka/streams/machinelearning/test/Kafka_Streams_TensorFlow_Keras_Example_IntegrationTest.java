@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import com.github.jukkakarvanen.kafka.streams.integration.utils.TestEmbeddedKafkaCluster;
+import com.github.jukkakarvanen.kafka.streams.integration.utils.TestKafkaStreams;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -43,7 +45,7 @@ import org.nd4j.linalg.io.ClassPathResource;
 public class Kafka_Streams_TensorFlow_Keras_Example_IntegrationTest {
 
 	@ClassRule
-	public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(1);
+	public static final EmbeddedKafkaCluster CLUSTER = new TestEmbeddedKafkaCluster(1);
 
 	private static final String inputTopic = "InputTopic";
 	private static final String outputTopic = "OutputTopic";
@@ -120,7 +122,7 @@ public class Kafka_Streams_TensorFlow_Keras_Example_IntegrationTest {
 
 		// Start Kafka Streams Application to process new incoming messages from
 		// Input Topic
-		final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
+		final KafkaStreams streams = new TestKafkaStreams(builder.build(), streamsConfiguration);
 		streams.cleanUp();
 		streams.start();
 		System.out.println("Prediction Microservice is running...");

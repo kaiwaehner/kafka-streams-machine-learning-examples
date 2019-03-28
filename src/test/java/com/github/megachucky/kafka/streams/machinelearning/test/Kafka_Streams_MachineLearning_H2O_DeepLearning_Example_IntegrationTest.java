@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import com.github.jukkakarvanen.kafka.streams.integration.utils.TestEmbeddedKafkaCluster;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -42,7 +43,7 @@ import hex.genmodel.easy.prediction.BinomialModelPrediction;
 public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest {
 
 	@ClassRule
-	public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(1);
+	public static final EmbeddedKafkaCluster CLUSTER = new TestEmbeddedKafkaCluster(1);
 
 	private static final String inputTopic = "AirlineInputTopic";
 	private static final String outputTopic = "AirlineOutputTopic";

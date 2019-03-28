@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import com.github.jukkakarvanen.kafka.streams.integration.utils.TestEmbeddedKafkaCluster;
+import com.github.jukkakarvanen.kafka.streams.integration.utils.TestKafkaStreams;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -48,7 +50,7 @@ import com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_TensorF
 public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest {
 
 	@ClassRule
-	public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(1);
+	public static final EmbeddedKafkaCluster CLUSTER = new TestEmbeddedKafkaCluster(1);
 
 	private static final String inputTopic = "ImageInputTopic";
 	private static final String outputTopic = "ImageOutputTopic";
@@ -144,7 +146,7 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest 
 
 		// Start Kafka Streams Application to process new incoming messages from
 		// Input Topic
-		final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
+		final KafkaStreams streams = new TestKafkaStreams(builder.build(), streamsConfiguration);
 		streams.cleanUp();
 		streams.start();
 		System.out.println("Image Recognition Microservice is running...");

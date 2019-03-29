@@ -6,7 +6,6 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.TopologyTestDriver;
 import org.apache.kafka.streams.test.ConsumerRecordFactory;
-import org.apache.kafka.streams.test.OutputVerifier;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +16,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
+/**
+ * TopologyTestDriver based test about stream processing of Kafka_Streams_TensorFlow_Image_Recognition_Example.
+ *
+ * @author Jukka Karvanen /  jukinimi.com
+ * *       Unit Test of
+ *         {@link Kafka_Streams_TensorFlow_Image_Recognition_Example}, using an
+ *         TopologyTestDriver and a TensorFlow CNN model.
+ *
+ */
 
 public class Kafka_Streams_TensorFlow_Image_Recognition_ExampleTest {
     private TopologyTestDriver testDriver;
@@ -46,12 +55,17 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_ExampleTest {
         return output.value();
     }
 
+    /** Simple recognition test validating only the recognition part of the output
+     */
     @Test
     public void testOne() {
         testDriver.pipeInput(recordFactory.create(Kafka_Streams_TensorFlow_Image_Recognition_Example.imageInputTopic, null, "src/main/resources/TensorFlow_Images/new_airplane.jpg", 1L));
         assertThat(getOutput()).contains("What is the content of this picture? => airliner");
     }
 
+    /** Test based on Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest
+     *
+     */
     @Test
     public void testList() {
         // Images: 'unknown', Airliner, 'unknown', Butterfly

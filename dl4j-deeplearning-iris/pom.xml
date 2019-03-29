@@ -63,23 +63,6 @@
     		<version>1.0.0-beta3</version> 
 		</dependency>
 
-
-		<!-- https://mvnrepository.com/artifact/org.tensorflow/tensorflow -->
-		<dependency>
-			<groupId>org.tensorflow</groupId>
-			<artifactId>tensorflow</artifactId>
-			<version>1.3.0</version>
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/ai.h2o/h2o-genmodel -->
-		<dependency>
-			<groupId>ai.h2o</groupId>
-			<artifactId>h2o-genmodel</artifactId>
-			<version>3.14.0.1</version>
-		</dependency>
-       
-
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -150,6 +133,7 @@
 			</plugin>
 
 			<!--package as one fat jar -->
+			<!-- this example does not contain actual application yet
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -175,6 +159,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>

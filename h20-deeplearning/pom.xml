@@ -35,43 +35,6 @@
 			<version>${kafka.version}</version>
 		</dependency>
     
-		<!-- DeepLearning4J needs the following dependencies: 1) deeplearning4j-core, 
-			which contains the neural network implementations 2) nd4j-native-platform, 
-			the CPU version of the ND4J library that powers DL4J 3) datavec-api - Datavec 
-			is our library vectorizing and loading data -->
-
-		<!-- ND4J backend. You need one in every DL4J project. Normally define 
-			artifactId as either "nd4j-native-platform" or "nd4j-cuda-7.5-platform" -->
-		<!-- https://mvnrepository.com/artifact/org.nd4j/nd4j-native-platform -->
-		<dependency>
-			<groupId>org.nd4j</groupId>
-			<artifactId>nd4j-native-platform</artifactId>
-			<version>1.0.0-beta3</version>
-		</dependency>
-
-		<!-- Core DL4J functionality -->
-		<!-- https://mvnrepository.com/artifact/org.deeplearning4j/deeplearning4j-core -->
-		<dependency>
-			<groupId>org.deeplearning4j</groupId>
-			<artifactId>deeplearning4j-core</artifactId>
-			<version>1.0.0-beta3</version>
-		</dependency>
-
-		<dependency>
-    		<groupId>org.deeplearning4j</groupId>
-    		<artifactId>deeplearning4j-modelimport</artifactId>
-    		<version>1.0.0-beta3</version> 
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.tensorflow/tensorflow -->
-		<dependency>
-			<groupId>org.tensorflow</groupId>
-			<artifactId>tensorflow</artifactId>
-			<version>1.3.0</version>
-		</dependency>
-
-
 		<!-- https://mvnrepository.com/artifact/ai.h2o/h2o-genmodel -->
 		<dependency>
 			<groupId>ai.h2o</groupId>

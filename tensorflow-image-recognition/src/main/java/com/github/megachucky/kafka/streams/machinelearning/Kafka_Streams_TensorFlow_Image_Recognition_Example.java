@@ -13,6 +13,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 import org.tensorflow.DataType;
 import org.tensorflow.Graph;
@@ -31,27 +32,38 @@ import org.tensorflow.Tensor;
  */
 public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 
-	private static final String imageInputTopic = "ImageInputTopic";
-	private static final String imageOutputTopic = "ImageOutputTopic";
+	static final String imageInputTopic = "ImageInputTopic";
+	static final String imageOutputTopic = "ImageOutputTopic";
 
 	// Prediction Value
 	private static String imageClassification = "unknown";
 	private static String imageProbability = "unknown";
 
 	public static void main(final String[] args) throws Exception {
-
-		// Create TensorFlow object
-
-		String modelDir = "src/main/resources/generatedModels/CNN_inception5h";
-
-		Path pathGraph = Paths.get(modelDir, "tensorflow_inception_graph.pb");
-		byte[] graphDef = Files.readAllBytes(pathGraph);
-
-		Path pathModel = Paths.get(modelDir, "imagenet_comp_graph_label_strings.txt");
-		List<String> labels = Files.readAllLines(pathModel, Charset.forName("UTF-8"));
-
 		// Configure Kafka Streams Application
 		final String bootstrapServers = args.length > 0 ? args[0] : "localhost:9092";
+		final Properties streamsConfiguration = getStreamConfiguration(bootstrapServers);
+		Topology topology = getStreamTopology();
+
+		// Start Kafka Streams Application to process new incoming images from the Input
+		// Topic
+		final KafkaStreams streams = new KafkaStreams(topology, streamsConfiguration);
+
+		streams.cleanUp();
+
+		streams.start();
+
+		System.out.println("Image Recognition Microservice is running...");
+
+		System.out.println("Input to Kafka Topic " + imageInputTopic + "; Output to Kafka Topic " + imageOutputTopic);
+
+		// Add shutdown hook to respond to SIGTERM and gracefully close Kafka
+		// Streams
+		Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+
+	}
+
+	static Properties getStreamConfiguration(String bootstrapServers) {
 		final Properties streamsConfiguration = new Properties();
 		// Give the Streams application a unique name. The name must be unique
 		// in the Kafka cluster
@@ -65,6 +77,19 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 		// values.
 		streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 		streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+		return streamsConfiguration;
+	}
+
+	static Topology getStreamTopology() throws IOException {
+		// Create TensorFlow object
+
+		String modelDir = "src/main/resources/generatedModels/CNN_inception5h";
+
+		Path pathGraph = Paths.get(modelDir, "tensorflow_inception_graph.pb");
+		byte[] graphDef = Files.readAllBytes(pathGraph);
+
+		Path pathModel = Paths.get(modelDir, "imagenet_comp_graph_label_strings.txt");
+		List<String> labels = Files.readAllLines(pathModel, Charset.forName("UTF-8"));
 
 		// In the subsequent lines we define the processing topology of the
 		// Streams application.
@@ -116,23 +141,9 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 		// Send prediction information to Output Topic
 		transformedMessage.to(imageOutputTopic);
 
-		// Start Kafka Streams Application to process new incoming images from the Input
-		// Topic
-		final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
-
-		streams.cleanUp();
-
-		streams.start();
-
-		System.out.println("Image Recognition Microservice is running...");
-
-		System.out.println("Input to Kafka Topic " + imageInputTopic + "; Output to Kafka Topic " + imageOutputTopic);
-
-		// Add shutdown hook to respond to SIGTERM and gracefully close Kafka
-		// Streams
-		Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
-
+		return builder.build();
 	}
+
 
 	// ########################################################################################
 	// Private helper class for construction and execution of the pre-built

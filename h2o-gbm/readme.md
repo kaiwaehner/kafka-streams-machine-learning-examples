@@ -69,6 +69,7 @@ This shows how you can easily test or replace different analytic models for one 
 Same as above but change class to start app:
 
 - Start the Kafka Streams app: 
+
                 java -cp target/h2o-gbm-CP51_AK21-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_DeepLearning_Example
 
 

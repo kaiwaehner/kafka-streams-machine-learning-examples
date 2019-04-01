@@ -38,7 +38,7 @@ You can easily test this by yourself. Here are the steps:
                 kafka-topics --zookeeper localhost:2181 --create --topic AirlineOutputTopic --partitions 3 --replication-factor 1
 - Start the Kafka Streams app: 
 
-                java -cp target/h20-gbm-CP51_AK21-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
+                java -cp target/h2o-gbm-CP51_AK21-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
 - Send messages, e.g. with kafkacat:
 
                 echo -e "1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES" | kafkacat -b localhost:9092 -P -t AirlineInputTopic
@@ -69,7 +69,7 @@ This shows how you can easily test or replace different analytic models for one 
 Same as above but change class to start app:
 
 - Start the Kafka Streams app: 
-                java -cp target/h20-gbm-CP51_AK21-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_DeepLearning_Example
+                java -cp target/h2o-gbm-CP51_AK21-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_DeepLearning_Example
 
 
 

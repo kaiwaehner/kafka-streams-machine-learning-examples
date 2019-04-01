@@ -17,9 +17,13 @@ import hex.genmodel.easy.prediction.BinomialModelPrediction;
  * @author Kai Waehner (www.kai-waehner.de)
  * 
  * Creates a new Kafka Streams application for prediction of flight delays 
- * The application uses the GBM model "gbm_pojo_test" (built with H2O.ai) to infer messages 
+ * The application uses the GBM model "deeplearning_fe7c1f02_08ec_4070_b784_c2531147e451" (built with H2O.ai) to infer messages
  * sent to Kafka topic "AirlineInputTopic". The outcome of model inference is sent to
  * Kafka topic "AirlineOutputTopic".
+ *
+ * Main logic now in parent Class
+ * Refactoring to utilize common @link Kafka_Streams_MachineLearning_H2O_Application class
+ * @author Jukka Karvanen /  jukinimi.com
  *
  */
 public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example extends Kafka_Streams_MachineLearning_H2O_Application {

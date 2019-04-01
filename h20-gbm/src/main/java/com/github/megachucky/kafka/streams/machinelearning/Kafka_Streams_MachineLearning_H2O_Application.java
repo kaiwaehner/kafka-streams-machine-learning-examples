@@ -18,10 +18,14 @@ import java.util.Properties;
  * @author Kai Waehner (www.kai-waehner.de)
  *
  *         Creates a new Kafka Streams application for prediction of flight
- *         delays The application uses the GBM model "gbm_pojo_test" (built with
+ *         delays The application uses the GBM model (built with
  *         H2O.ai) to infer messages sent to Kafka topic "AirlineInputTopic".
  *         The outcome of model inference is sent to Kafka topic
  *         "AirlineOutputTopic".
+ *
+ *  Refactored that all model use same base class, only modelName and applicationId passed in
+ *  Used Kafka_Streams_MachineLearning_H2O_GBM_Example_Refactored class as baseline for this
+ *  @author Jukka Karvanen /  jukinimi.com
  *
  */
 public class Kafka_Streams_MachineLearning_H2O_Application {

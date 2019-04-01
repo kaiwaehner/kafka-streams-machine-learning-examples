@@ -21,8 +21,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
  *
  * @author Jukka Karvanen /  jukinimi.com
  * *       Unit Test of
- *         {@link Kafka_Streams_MachineLearning_H2O_GBM_Example}, using an
- *         TopologyTestDriver and a TensorFlow CNN model.
+ *         {@link Kafka_Streams_MachineLearning_H2O_DeepLearning_Example}, using an
+ *         TopologyTestDriver and a H20 DeepLearning model.
  *
  */
 

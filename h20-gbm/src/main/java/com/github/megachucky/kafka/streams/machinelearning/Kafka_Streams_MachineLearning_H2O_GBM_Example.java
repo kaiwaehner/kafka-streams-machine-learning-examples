@@ -23,6 +23,9 @@ import hex.genmodel.easy.prediction.BinomialModelPrediction;
  *         The outcome of model inference is sent to Kafka topic
  *         "AirlineOutputTopic".
  *
+ *  * Main logic now in parent Class
+ *  * Refactoring to utilize common @link Kafka_Streams_MachineLearning_H2O_Application class
+ *  * @author Jukka Karvanen /  jukinimi.com
  */
 public class Kafka_Streams_MachineLearning_H2O_GBM_Example extends Kafka_Streams_MachineLearning_H2O_Application {
 	// Name of the generated H2O model

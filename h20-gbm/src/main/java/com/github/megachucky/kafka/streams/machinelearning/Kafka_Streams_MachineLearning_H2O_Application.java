@@ -24,7 +24,7 @@ import hex.genmodel.easy.prediction.BinomialModelPrediction;
  *         "AirlineOutputTopic".
  *
  */
-public class Kafka_Streams_MachineLearning_H2O_GBM_Example_Refactored {
+public class Kafka_Streams_MachineLearning_H2O_Application {
 
 	// Name of the generated H2O model
 	private static String modelClassName = "com.github.megachucky.kafka.streams.machinelearning.models.gbm_pojo_test";

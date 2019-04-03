@@ -40,9 +40,9 @@ You can easily test this by yourself. Here are the steps:
                 confluent start kafka
 * Create topics AirlineInputTopic and AirlineOutputTopic
 
-                kafka-topics --zookeeper localhost:2181 --create --topic AirlineInputTopic --partitions 3 --replication-factor 1
+                kafka-topics --bootstrap-server localhost:9092 --create --topic AirlineInputTopic --partitions 3 --replication-factor 1
 
-                kafka-topics --zookeeper localhost:2181 --create --topic AirlineOutputTopic --partitions 3 --replication-factor 1
+                kafka-topics --bootstrap-server localhost:9092 --create --topic AirlineOutputTopic --partitions 3 --replication-factor 1
 * Start the Kafka Streams app: 
 
                 java -cp h2o-gbm/target/h2o-gbm-CP51_AK21-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
@@ -72,8 +72,7 @@ Specification of the used model:
 Unit Test using TopologyTestDriver:
 [Kafka_Streams_MachineLearning_H2O_DeepLearning_ExampleTest.java](src/test/java/com/github/megachucky/kafka/streams/machinelearning/Kafka_Streams_MachineLearning_H2O_DeepLearning_ExampleTest.java)
 
-Integration Test using EmbeddedKafkaCluster:
-[Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java](src/test/java/com/github/megachucky/kafka/streams/machinelearning/Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java)
+Integration Test using EmbeddedKafkaCluster:[Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java](src/test/java/com/github/megachucky/kafka/streams/machinelearning/Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest.java)
 
 ### Manual Testing
 

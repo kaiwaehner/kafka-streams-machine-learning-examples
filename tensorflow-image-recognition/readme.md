@@ -17,9 +17,10 @@ A prebuilt TensorFlow CNN model is instantiated and used in a Kafka Streams appl
 
 **Source Code**
 
-[Kafka_Streams_TensorFlow_Image_Recognition_Example.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/java/com/github/megachucky/kafka/streams/machinelearning/Kafka_Streams_TensorFlow_Image_Recognition_Example.java)
+[Kafka_Streams_TensorFlow_Image_Recognition_Example.java](src/main/java/com/github/megachucky/kafka/streams/machinelearning/Kafka_Streams_TensorFlow_Image_Recognition_Example.java)
 
 **Unit Test**
 
-[Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest.java)
+[Kafka_Streams_TensorFlow_Image_Recognition_ExampleTest.java](src/test/java/com/github/megachucky/kafka/streams/machinelearning/Kafka_Streams_TensorFlow_Image_Recognition_ExampleTest.java)
+[Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest.java](src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_TensorFlow_Image_Recognition_Example_IntegrationTest.java)
 

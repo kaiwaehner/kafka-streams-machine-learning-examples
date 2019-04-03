@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.kaiwaehner.kafka.streams.machinelearning</groupId>
-	<artifactId>h20-gbm</artifactId>
+	<artifactId>h2o-gbm</artifactId>
 	<version>CP51_AK21</version>
 
 	<repositories>
@@ -44,6 +44,13 @@
        
 
 		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams-test-utils</artifactId>
+			<version>${kafka.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

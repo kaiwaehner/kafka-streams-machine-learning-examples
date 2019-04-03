@@ -62,7 +62,7 @@ If you want to run an implementation of a main class in package **com.github.meg
 
 ### Example 1 - Gradient Boosting with H2O.ai for Prediction of Flight Delays
 
-Detailed info in [h20-gbm](h20-gbm/readme.md)
+Detailed info in [h2o-gbm](h2o-gbm/readme.md)
 
 ### Example 2 - Convolutional Neural Network (CNN) with TensorFlow for Image Recognition
 

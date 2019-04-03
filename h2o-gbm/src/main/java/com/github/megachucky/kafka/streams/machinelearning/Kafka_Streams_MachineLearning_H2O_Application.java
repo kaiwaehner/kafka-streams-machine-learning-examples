@@ -1,50 +1,64 @@
 package com.github.megachucky.kafka.streams.machinelearning;
 
-import java.util.Properties;
-
-import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.KStream;
-
 import hex.genmodel.easy.EasyPredictModelWrapper;
 import hex.genmodel.easy.RowData;
 import hex.genmodel.easy.exception.PredictException;
 import hex.genmodel.easy.prediction.BinomialModelPrediction;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.ValueMapper;
+
+import java.util.Properties;
 
 /**
  * @author Kai Waehner (www.kai-waehner.de)
- * 
+ *
  *         Creates a new Kafka Streams application for prediction of flight
- *         delays The application uses the GBM model "gbm_pojo_test" (built with
+ *         delays The application uses the GBM model (built with
  *         H2O.ai) to infer messages sent to Kafka topic "AirlineInputTopic".
  *         The outcome of model inference is sent to Kafka topic
  *         "AirlineOutputTopic".
  *
+ *  Refactored that all model use same base class, only modelName and applicationId passed in
+ *  Used Kafka_Streams_MachineLearning_H2O_GBM_Example_Refactored class as baseline for this
+ *  @author Jukka Karvanen /  jukinimi.com
+ *
  */
-public class Kafka_Streams_MachineLearning_H2O_GBM_Example {
+public class Kafka_Streams_MachineLearning_H2O_Application {
 
-	// Name of the generated H2O model
-	private static String modelClassName = "com.github.megachucky.kafka.streams.machinelearning.models.gbm_pojo_test";
+	public static final String INPUT_TOPIC = "AirlineInputTopic";
+	public static final String OUTPUT_TOPIC = "AirlineOutputTopic";
 
-	// Prediction Value
-	private static String airlineDelayPreduction = "unknown";
 
-	public static void main(final String[] args) throws Exception {
+	public static void execute(String bootstrapServers, String applictionId, String modelClassName) throws Exception {
 
-		// Create H2O object (see gbm_pojo_test.java)
-		hex.genmodel.GenModel rawModel;
-		rawModel = (hex.genmodel.GenModel) Class.forName(modelClassName).newInstance();
-		EasyPredictModelWrapper model = new EasyPredictModelWrapper(rawModel);
+		final Properties streamsConfiguration = getStreamConfiguration(bootstrapServers, applictionId);
+		Topology topology = getStreamTopology(modelClassName);
 
-		// Configure Kafka Streams Application
-		final String bootstrapServers = args.length > 0 ? args[0] : "localhost:9092";
+		// Start Kafka Streams Application to process new incoming messages from Input
+		// Topic
+		final KafkaStreams streams = new KafkaStreams(topology, streamsConfiguration);
+		streams.cleanUp();
+		streams.start();
+		System.out.println("Airline Delay Prediction Microservice is running...");
+		System.out.println("Input to Kafka Topic 'AirlineInputTopic'; Output to Kafka Topic 'AirlineOutputTopic'");
+
+		// Add shutdown hook to respond to SIGTERM and gracefully close Kafka
+		// Streams
+		Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+
+	}
+
+	static Properties getStreamConfiguration(String bootstrapServers, String applicationId) {
 		final Properties streamsConfiguration = new Properties();
 		// Give the Streams application a unique name. The name must be unique
 		// in the Kafka cluster
 		// against which the application is run.
-		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-h2o-gbm-example");
+		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		// Where to find Kafka broker(s).
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 
@@ -55,6 +69,14 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example {
 
 		// For illustrative purposes we disable record caches
 		streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
+		return streamsConfiguration;
+	}
+
+	static Topology getStreamTopology(String modelClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		// Create H2O object (see gbm_pojo_test.java)
+		hex.genmodel.GenModel rawModel;
+		rawModel = (hex.genmodel.GenModel) Class.forName(modelClassName).newInstance();
+		EasyPredictModelWrapper model = new EasyPredictModelWrapper(rawModel);
 
 		// In the subsequent lines we define the processing topology of the
 		// Streams application.
@@ -65,11 +87,12 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example {
 		// represent lines of text (for the sake of this example, we ignore
 		// whatever may be stored
 		// in the message keys).
-		final KStream<String, String> airlineInputLines = builder.stream("AirlineInputTopic");
+		final KStream<String, String> airlineInputLines = builder.stream(INPUT_TOPIC);
 
-		// Stream Processor (in this case 'foreach' to add custom logic, i.e. apply the
-		// analytic model)
-		airlineInputLines.foreach((key, value) -> {
+		// Stream Processor (in this case 'mapValues' to add custom logic, i.e. apply
+		// the analytic model)
+		KStream<String, String> transformedMessage =
+		airlineInputLines.mapValues(value -> {
 
 			// Year,Month,DayofMonth,DayOfWeek,DepTime,CRSDepTime,ArrTime,CRSArrTime,UniqueCarrier,FlightNum,TailNum,ActualElapsedTime,CRSElapsedTime,AirTime,ArrDelay,DepDelay,Origin,Dest,Distance,TaxiIn,TaxiOut,Cancelled,CancellationCode,Diverted,CarrierDelay,WeatherDelay,NASDelay,SecurityDelay,LateAircraftDelay,IsArrDelayed,IsDepDelayed
 			// value:
@@ -100,7 +123,6 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example {
 					e.printStackTrace();
 				}
 
-				airlineDelayPreduction = p.label;
 				System.out.println("Label (aka prediction) is flight departure delayed: " + p.label);
 				System.out.print("Class probabilities: ");
 				for (int i = 0; i < p.classProbabilities.length; i++) {
@@ -111,32 +133,14 @@ public class Kafka_Streams_MachineLearning_H2O_GBM_Example {
 				}
 				System.out.println("");
 				System.out.println("#####################");
-
+				return "Prediction: Is Airline delayed? => " + p.label;
 			}
-
+			//No prediction
+			return null;
 		});
 
-		// airlineInputLines.print();
-
-		// Transform message: Add prediction information
-		KStream<String, Object> transformedMessage = airlineInputLines
-				.mapValues(value -> "Prediction: Is Airline delayed? => " + airlineDelayPreduction);
-
 		// Send prediction information to Output Topic
-		transformedMessage.to("AirlineOutputTopic");
-
-		// Start Kafka Streams Application to process new incoming messages from Input
-		// Topic
-		final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
-		streams.cleanUp();
-		streams.start();
-		System.out.println("Airline Delay Prediction Microservice is running...");
-		System.out.println("Input to Kafka Topic 'AirlineInputTopic'; Output to Kafka Topic 'AirlineOutputTopic'");
-
-		// Add shutdown hook to respond to SIGTERM and gracefully close Kafka
-		// Streams
-		Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
-
+		transformedMessage.to(OUTPUT_TOPIC);
+		return builder.build();
 	}
-
 }

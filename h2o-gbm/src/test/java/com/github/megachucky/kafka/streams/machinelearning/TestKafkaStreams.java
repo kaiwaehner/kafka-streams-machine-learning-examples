@@ -1,4 +1,4 @@
-package com.github.jukkakarvanen.kafka.streams.integration.utils;
+package com.github.megachucky.kafka.streams.machinelearning;
 
 import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.streams.KafkaClientSupplier;
@@ -9,13 +9,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-/** This is helper class to workaround for Failing stream tests in Windows environment KAFKA-6647.
+/**
+ * This is helper class to workaround for Failing stream tests in Windows
+ * environment KAFKA-6647.
  *
  * @author Jukka Karvanen
  *
- * The causing issue is https://issues.apache.org/jira/browse/KAFKA-6647
- * Replacing KafkaStreams with TestKafkaStreams will catch and ignore the exception caused by cleanUp
- * The exception does not have affect to functionality
+ *         The causing issue is https://issues.apache.org/jira/browse/KAFKA-6647
+ *         Replacing KafkaStreams with TestKafkaStreams will catch and ignore
+ *         the exception caused by cleanUp The exception does not have affect to
+ *         functionality
  */
 
 public class TestKafkaStreams extends KafkaStreams {

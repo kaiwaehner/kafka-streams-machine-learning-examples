@@ -10,7 +10,7 @@
 
 	<modules>
         <!--### Example 1 - Gradient Boosting with H2O.ai for Prediction of Flight Delays -->
-		<module>h20-gbm</module>
+		<module>h2o-gbm</module>
         <!-- Example 2 - Convolutional Neural Network (CNN) with TensorFlow for Image Recognition -->
         <module>tensorflow-image-recognition</module>
         <!-- Example 3 - Iris Prediction using a Neural Network with DeepLearning4J (DL4J) -->

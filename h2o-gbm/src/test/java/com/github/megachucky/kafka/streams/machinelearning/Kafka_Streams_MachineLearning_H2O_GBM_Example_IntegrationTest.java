@@ -1,4 +1,4 @@
-package com.github.megachucky.kafka.streams.machinelearning.test;
+package com.github.megachucky.kafka.streams.machinelearning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,13 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import com.github.jukkakarvanen.kafka.streams.integration.utils.TestEmbeddedKafkaCluster;
+import com.github.megachucky.kafka.streams.machinelearning.TestEmbeddedKafkaCluster;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.common.utils.MockTime;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -25,31 +24,39 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example;
+
 import hex.genmodel.easy.EasyPredictModelWrapper;
 import hex.genmodel.easy.RowData;
 import hex.genmodel.easy.exception.PredictException;
 import hex.genmodel.easy.prediction.BinomialModelPrediction;
+import kafka.utils.MockTime;
 
 /**
  * 
  * @author Kai Waehner (www.kai-waehner.de)
  * 
- *         End-to-end integration test, using an embedded Kafka cluster and a
- *         H2O.ai DeepLearning Model. Mostly identical to the GBM example, but
- *         uses another Model which was built using H2O's DeepLearning
- *         implementation.
+ *         End-to-end integration test based on
+ *         {@link Kafka_Streams_MachineLearning_H2O_GBM_Example}, using an
+ *         embedded Kafka cluster and a H2O.ai GBM Model.
+ *
+ *         See {@link Kafka_Streams_MachineLearning_H2O_GBM_Example} for further
+ *         documentation.
  *
  */
-public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationTest {
+public class Kafka_Streams_MachineLearning_H2O_GBM_Example_IntegrationTest {
 
 	@ClassRule
+	// public static final EmbeddedSingleNodeKafkaCluster CLUSTER = new
+	// EmbeddedSingleNodeKafkaCluster();
+
 	public static final EmbeddedKafkaCluster CLUSTER = new TestEmbeddedKafkaCluster(1);
 
 	private static final String inputTopic = "AirlineInputTopic";
 	private static final String outputTopic = "AirlineOutputTopic";
 
 	// Name of the generated H2O.ai model
-	private static String modelClassName = "com.github.megachucky.kafka.streams.machinelearning.models.deeplearning_fe7c1f02_08ec_4070_b784_c2531147e451";
+	private static String modelClassName = "com.github.megachucky.kafka.streams.machinelearning.models.gbm_pojo_test";
 
 	// Prediction Value
 	private static String airlineDelayPreduction = "unknown";
@@ -73,8 +80,7 @@ public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationT
 		//
 
 		Properties streamsConfiguration = new Properties();
-		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG,
-				"kafka-streams-h2o-deeplearning-integration-test");
+		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-h2o-gbm-integration-test");
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
 
 		// The commit interval for flushing records to state stores and
@@ -87,8 +93,7 @@ public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationT
 		// automatically removed after the test.
 		streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getAbsolutePath());
 
-		// Create H2O object (see
-		// deeplearning_fe7c1f02_08ec_4070_b784_c2531147e451.java)
+		// Create H2O object (see gbm_pojo_test.java)
 		hex.genmodel.GenModel rawModel;
 		rawModel = (hex.genmodel.GenModel) Class.forName(modelClassName).newInstance();
 		EasyPredictModelWrapper model = new EasyPredictModelWrapper(rawModel);
@@ -112,6 +117,7 @@ public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationT
 
 		// Stream Processor (in this case 'foreach' to add custom logic, i.e.
 		// apply the analytic model)
+
 		airlineInputLines.foreach((key, value) -> {
 
 			// Year,Month,DayofMonth,DayOfWeek,DepTime,CRSDepTime,ArrTime,CRSArrTime,UniqueCarrier,FlightNum,TailNum,ActualElapsedTime,CRSElapsedTime,AirTime,ArrDelay,DepDelay,Origin,Dest,Distance,TaxiIn,TaxiOut,Cancelled,CancellationCode,Diverted,CarrierDelay,WeatherDelay,NASDelay,SecurityDelay,LateAircraftDelay,IsArrDelayed,IsDepDelayed
@@ -179,7 +185,8 @@ public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationT
 		producerConfig.put(ProducerConfig.RETRIES_CONFIG, 0);
 		producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		IntegrationTestUtils.produceValuesSynchronously(inputTopic, inputValues, producerConfig, new MockTime());
+		IntegrationTestUtils.<String>produceValuesSynchronously(inputTopic, inputValues, producerConfig,
+				new MockTime());
 
 		//
 		// Step 3: Verify the application's output data.
@@ -197,7 +204,7 @@ public class Kafka_Streams_MachineLearning_H2O_DeepLearning_Example_IntegrationT
 		assertThat(response).isNotNull();
 		assertThat(response.get(0).value).isEqualTo("Prediction: Is Airline delayed? => YES");
 
-		assertThat(response.get(1).value).isEqualTo("Prediction: Is Airline delayed? => YES");
+		assertThat(response.get(1).value).isEqualTo("Prediction: Is Airline delayed? => NO");
 	}
 
 }

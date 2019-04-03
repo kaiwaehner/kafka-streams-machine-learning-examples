@@ -1,0 +1,43 @@
+package com.github.megachucky.kafka.streams.machinelearning;
+
+import java.util.Properties;
+
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.KStream;
+
+import hex.genmodel.easy.EasyPredictModelWrapper;
+import hex.genmodel.easy.RowData;
+import hex.genmodel.easy.exception.PredictException;
+import hex.genmodel.easy.prediction.BinomialModelPrediction;
+
+/**
+ * @author Kai Waehner (www.kai-waehner.de)
+ * 
+ *         Creates a new Kafka Streams application for prediction of flight
+ *         delays The application uses the GBM model "gbm_pojo_test" (built with
+ *         H2O.ai) to infer messages sent to Kafka topic "AirlineInputTopic".
+ *         The outcome of model inference is sent to Kafka topic
+ *         "AirlineOutputTopic".
+ *
+ *  * Main logic now in parent Class
+ *  * Refactoring to utilize common @link Kafka_Streams_MachineLearning_H2O_Application class
+ *  * @author Jukka Karvanen /  jukinimi.com
+ */
+public class Kafka_Streams_MachineLearning_H2O_GBM_Example extends Kafka_Streams_MachineLearning_H2O_Application {
+	// Name of the generated H2O model
+	static String modelClassName = "com.github.megachucky.kafka.streams.machinelearning.models.gbm_pojo_test";
+
+	static final String APPLICATION_ID = "kafka-streams-h2o-gbm-example";
+
+	public static void main(final String[] args) throws Exception {
+
+		// Configure Kafka Streams Application
+		final String bootstrapServers = args.length > 0 ? args[0] : "localhost:9092";
+		execute(bootstrapServers, APPLICATION_ID, modelClassName);
+	}
+
+}

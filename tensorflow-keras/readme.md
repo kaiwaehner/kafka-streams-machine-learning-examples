@@ -14,11 +14,11 @@ Development of an analytic model trained with Python, Keras and TensorFlow and d
 * [Keras](https://keras.io/) - a high-level neural networks API, written in Python and capable of running on top of TensorFlow, CNTK, or Theano.
 * [TensorFlow](https://www.tensorflow.org/) - used as backend under the hood of Keras 
 * DeepLearning4J 's [KerasModelImport feature](https://deeplearning4j.org/docs/latest/keras-import-overview)  is used for importing the Keras / TensorFlow model into Java. The used model is its 'Hello World' model example. 
-* The Keras model was trained with this [Python script](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/main/resources/generatedModels/Keras/keras-model-script.py).
+* The Keras model was trained with this [Python script](src/main/resources/generatedModels/Keras/keras-model-script.py).
 
 **Unit Test**
 
-[Kafka_Streams_TensorFlow_Keras_Example_IntegrationTest.java](https://github.com/kaiwaehner/kafka-streams-machine-learning-examples/blob/master/src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_TensorFlow_Keras_Example_IntegrationTest.java)
+[Kafka_Streams_TensorFlow_Keras_Example_IntegrationTest.java](src/test/java/com/github/megachucky/kafka/streams/machinelearning/test/Kafka_Streams_TensorFlow_Keras_Example_IntegrationTest.java)
 
 
 

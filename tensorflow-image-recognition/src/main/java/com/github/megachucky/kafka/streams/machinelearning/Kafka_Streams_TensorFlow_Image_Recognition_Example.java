@@ -15,6 +15,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Printed;
 import org.tensorflow.DataType;
 import org.tensorflow.Graph;
 import org.tensorflow.Output;
@@ -34,10 +35,6 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 
 	static final String imageInputTopic = "ImageInputTopic";
 	static final String imageOutputTopic = "ImageOutputTopic";
-
-	// Prediction Value
-	private static String imageClassification = "unknown";
-	private static String imageProbability = "unknown";
 
 	public static void main(final String[] args) throws Exception {
 		// Configure Kafka Streams Application
@@ -99,12 +96,16 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 		// message values represent lines of text
 		final KStream<String, String> imageInputLines = builder.stream(imageInputTopic);
 
-		// Stream Processor (in this case 'foreach' to add custom logic, i.e. apply the
-		// analytic model)
-		imageInputLines.foreach((key, value) -> {
+		//imageInputLines.print(Printed.toSysOut());
 
-			imageClassification = "unknown";
-			imageProbability = "unknown";
+		// Stream Processor (in this case inside mapValues to add custom logic, i.e. apply the
+		// analytic model)
+		// Transform message: Add prediction information
+		KStream<String, Object> transformedMessage =
+		imageInputLines.mapValues(value ->  {
+
+			String imageClassification = "unknown";
+			String imageProbability = "unknown";
 
 			String imageFile = value;
 
@@ -128,15 +129,9 @@ public class Kafka_Streams_TensorFlow_Image_Recognition_Example {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			return "Prediction: What is the content of this picture? => " + imageClassification
+					+ ", probability = " + imageProbability;
 		});
-
-		// airlineInputLines.print();
-
-		// Transform message: Add prediction information
-		KStream<String, Object> transformedMessage = imageInputLines
-				.mapValues(value -> "Prediction: What is the content of this picture? => " + imageClassification
-						+ ", probability = " + imageProbability);
 
 		// Send prediction information to Output Topic
 		transformedMessage.to(imageOutputTopic);

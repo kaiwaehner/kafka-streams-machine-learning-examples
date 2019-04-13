@@ -5,7 +5,7 @@
 
 	<groupId>com.github.kaiwaehner.kafka.streams.machinelearning</groupId>
 	<artifactId>tensorflow-keras</artifactId>
-	<version>CP51_AK21</version>
+	<version>CP52_AK22</version>
 
 	<repositories>
 		<repository>
@@ -16,10 +16,10 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<kafka.version>2.1.0</kafka.version>
-		<kafka.scala.version>2.11</kafka.scala.version>
+		<kafka.version>2.2.0</kafka.version>
+		<kafka.scala.version>2.12</kafka.scala.version>
 		<scala.version>${kafka.scala.version}.8</scala.version>
-		<confluent.version>5.1.0</confluent.version>
+		<confluent.version>5.2.0</confluent.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

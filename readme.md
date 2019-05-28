@@ -1,6 +1,6 @@
 # Machine Learning + Kafka Streams Examples
 
-This project contains **examples which demonstrate how to deploy analytic models to mission-critical, scalable production leveraging [Apache Kafka](https://kafka.apache.org/) and its [Streams API](docs.confluent.io/current/streams/index.html).**
+This project contains **examples which demonstrate how to deploy analytic models to mission-critical, scalable production leveraging [Apache Kafka](https://kafka.apache.org/) and its [Streams API](https://docs.confluent.io/current/streams/index.html).**
 Examples will include analytic models built with TensorFlow, Keras, H2O, Python, DeepLearning4J and other technologies.
 
 ![Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure](http://www.kai-waehner.de/blog/wp-content/uploads/2017/10/Apache_Kafka_Ecosystem_Kafka_Streams_Machine_Learning.png "Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure")

@@ -5,7 +5,7 @@
 
 	<groupId>com.github.kaiwaehner.kafka.streams.machinelearning</groupId>
 	<artifactId>kafka-streams-machine-learning-examples</artifactId>
-	<version>CP52_AK22</version>
+	<version>CP53_AK23</version>
 	<packaging>pom</packaging>
 
 	<modules>

@@ -37,7 +37,7 @@ You can easily test this by yourself. Here are the steps:
 
 * Start Kafka, e.g. with Confluent CLI:
 
-                confluent start kafka
+                confluent local start kafka
 * Create topics AirlineInputTopic and AirlineOutputTopic
 
                 kafka-topics --bootstrap-server localhost:9092 --create --topic AirlineInputTopic --partitions 3 --replication-factor 1
@@ -45,7 +45,7 @@ You can easily test this by yourself. Here are the steps:
                 kafka-topics --bootstrap-server localhost:9092 --create --topic AirlineOutputTopic --partitions 3 --replication-factor 1
 * Start the Kafka Streams app: 
 
-                java -cp h2o-gbm/target/h2o-gbm-CP51_AK21-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
+                java -cp h2o-gbm/target/h2o-gbm-CP53_AK23-jar-with-dependencies.jar com.github.megachucky.kafka.streams.machinelearning.Kafka_Streams_MachineLearning_H2O_GBM_Example
 * Send messages, e.g. with kafkacat:
 
                 echo -e "1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,YES,YES" | kafkacat -b localhost:9092 -P -t AirlineInputTopic

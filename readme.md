@@ -5,15 +5,17 @@ Examples will include analytic models built with TensorFlow, Keras, H2O, Python,
 
 ![Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure](http://www.kai-waehner.de/blog/wp-content/uploads/2017/10/Apache_Kafka_Ecosystem_Kafka_Streams_Machine_Learning.png "Kafka Open Source Ecosystem for a Scalable Mission Critical Machine Learning Infrastructure")
 
-
 ## Material (Blogs Posts, Slides, Videos)
+
 Here is some material about this topic if you want to read and listen to the theory instead of just doing hands-on:
+
 - Blog Post: [How to Build and Deploy Scalable Machine Learning in Production with Apache Kafka](https://www.confluent.io/blog/build-deploy-scalable-machine-learning-production-apache-kafka/)
 - Slide Deck: [Apache Kafka + Machine Learning => Intelligent Real Time Applications](https://www.slideshare.net/KaiWaehner/apache-kafka-streams-machine-learning-deep-learning)
 - Slide Deck: [Deep Learning at Extreme Scale (in the Cloud)  with the Apache Kafka Open Source Ecosystem](https://www.slideshare.net/KaiWaehner/deep-learning-at-extreme-scale-in-the-cloud-with-the-apache-kafka-open-source-ecosystem)
 - Video Recording: [Deep Learning in Mission Critical and Scalable Real Time Applications with Open Source Frameworks](https://vimeo.com/jaxtv/review/256406763/7fbf4213be)
 - Blog Post: [Using Apache Kafka to Drive Cutting-Edge Machine Learning - Hybrid ML Architectures, AutoML, and more...](https://www.confluent.io/blog/using-apache-kafka-drive-cutting-edge-machine-learning)
 - Blog Post: [Machine Learning with Python, Jupyter, KSQL and TensorFlow](https://www.confluent.io/blog/machine-learning-with-python-jupyter-ksql-tensorflow)
+- Blog Post: [Streaming Machine Learning with Tiered Storage and Without a Data Lake](https://www.confluent.io/blog/streaming-machine-learning-with-tiered-storage/)
 
 ## Use Cases and Technologies
 
@@ -35,22 +37,28 @@ Here is some material about this topic if you want to read and listen to the the
 
 ##### Some other Github projects exist already with more ML + Kafka content:
 
+The most exciting and powerful example first:
+[Streaming Machine Learning at Scale from 100000 IoT Devices with HiveMQ, Apache Kafka and TensorFLow](https://github.com/kaiwaehner/hivemq-mqtt-tensorflow-kafka-realtime-iot-machine-learning-training-inference)
+
+Here some more demos:
+
 - Deep Learning UDF for KSQL: [Streaming Anomaly Detection of MQTT IoT Sensor Data using an Autoencoder](https://github.com/kaiwaehner/ksql-udf-deep-learning-mqtt-iot)
 - End-to-End ML Integration Demo: [Continuous Health Checks with Anomaly Detection using KSQL, Kafka Connect, Deep Learning and Elasticsearch](https://github.com/kaiwaehner/ksql-fork-with-deep-learning-function)
 - TensorFlow Serving + gRPC + Kafka Streams on Github => Stream Processing and RPC / Request-Response concepts combined: [Model inference with Apache Kafka, Kafka Streams and a TensorFlow model deployed on a TensorFlow Serving model server](https://github.com/kaiwaehner/tensorflow-serving-java-grpc-kafka-streams)
+- Solving the impedance mismatch between Data Scientist and Production Engineer: [Python, Jupyter, TensorFlow, Keras, Apache Kafka, KSQL](https://github.com/kaiwaehner/python-jupyter-apache-kafka-ksql-tensorflow-keras)
 
 ## Requirements, Installation and Usage
 The code is developed and tested on Mac and Linux operating systems. As Kafka does not support and work well on Windows, this is not tested at all.
 
 Java 8 and Maven 3 are required. Maven will download all required dependencies.
 
-Just download the project and run 
+Just download the project and run
 
                 mvn clean package
-                
-You can do this in main directory or each module separately.               
 
-Apache Kafka 2.1 is currently used. The code is also compatible with Kafka and Kafka Streams 1.1 and 2.0.
+You can do this in main directory or each module separately.
+
+Apache Kafka 2.5 is currently used. The code is also compatible with Kafka and Kafka Streams 1.1 and 2.x.
 
 **Please make sure to run the Maven build without any changes first.** If it works without errors, you can change library versions, Java version, etc. and see if it still works or if you need to adjust code. 
 
